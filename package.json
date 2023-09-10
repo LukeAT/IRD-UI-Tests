@@ -13,5 +13,8 @@
     "@typescript-eslint/parser": "^6.6.0",
     "eslint": "^8.48.0",
     "eslint-plugin-playwright": "^0.16.0"
+  },
+  "dependencies": {
+    "js-base64": "^3.7.5"
   }
 }

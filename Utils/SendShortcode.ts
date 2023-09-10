@@ -1,20 +1,12 @@
 import { Page } from "@playwright/test"
 import Blotter from "../Components/blotter"
 
-class shortCode {
+class SendShortcode {
 
     page: Page
 
     constructor(page: Page) {
         this.page = page
-    }
-
-    outright = {
-        EUR: "P EUR 5Y NOT 100MM",
-    }
-
-    XCSFixFloat = {
-        EUR: "P EUR 5Y NOT 100MM",
     }
 
     async sendShortCode(shortCode: string) {
@@ -26,4 +18,4 @@ class shortCode {
     }
 }
 
-export default shortCode
+export default SendShortcode

@@ -1,0 +1,10 @@
+class RFQStates {
+    
+    static RFQState = {
+        new: "NEW",
+        sent: "SENT",
+        acknowledged: "ACKNOWLEDGED",
+        quoted: "QUOTED",
+        done: "DONE",
+    }
+}
