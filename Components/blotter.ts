@@ -1,7 +1,7 @@
 import { Page, Locator } from "@playwright/test";
 
 class Blotter {
-    page: Page;
+    private page: Page;
     shortCodeInput: Locator;
     irsTab: Locator;
     goButton: Locator;
@@ -13,9 +13,7 @@ class Blotter {
         this.goButton = page.locator('//*[@id="goFlyMyPretties"]')
     }
 
-    async goToHomePage() {
-        await this.page.goto('https://uat3.otcxtrading.com')
-    }
+   
 }
 
 export default Blotter;

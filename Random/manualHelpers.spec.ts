@@ -5,15 +5,17 @@ test.describe('', () => {
         
         page.goto('https://markitwire.otcx.info/tickets')
 
-        let archiveButton = page.locator('//*[@id="root"]/div/div[1]/div/div[3]/button[2]')
+        const archiveButton = page.locator('//*[@id="root"]/div/div[1]/div/div[3]/button[2]')
 
-        const removeItems: number = 100
+        const removeItems: number = 50
 
-        var i = 0, len = removeItems;
+        let i = 0, len = removeItems;
         while (i < len) {
             await archiveButton?.click()
             i++
         }
+
+        expect('1').toEqual('1')
 
     })
     

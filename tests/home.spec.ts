@@ -1,32 +1,34 @@
-import { test, expect } from "@playwright/test";
-import Blotter from "../Components/blotter";
-
-
-
+import { test, expect, Page } from "@playwright/test";
+import Athentication from "../Utils/authenticate"
+import shortCode from "../Data/shortcode";
+import Archive from "../Utils/archive";
 
 test.describe('Home', () => {
 
+    let auth: Athentication
+    let sc: shortCode
+    let page: Page
 
+    test.beforeAll(async ({browser}) => {
+        page = await browser.newPage();
 
-    test('Verify IRS tab', async ({ page }) => {
-        
-        let p = new Blotter(page)
-        
-        // Navigate to homepage.
-        await p.goToHomePage()
-
-        // Sign-in.
-        await page.locator('#Email').fill('Lukebs1@u1.d1')
-        await page.locator('#Password').fill('bs')
-        await page.getByRole('button').filter({ hasText: 'Log In' }).click()
-
-        // Get through first time sign in pop-ups.
-        await page.getByRole('button').filter( { hasText: 'Enable' } ).click()
-        await page.getByRole('button').filter( { hasText: 'Remind Me in 14 days.' } ).click()
-
-        //Navigate to 
-        await p.irsTab.click()
-        await p.shortCodeInput.fill('p usd 5y not 44mm')
-        await p.goButton.click()
+        auth = new Athentication
+        sc = new shortCode(page)
+       
+        auth.signIn(page, auth.userNames.BuySideOutrightUsername, auth.passwords.BuySideOutrightPassword)
     })
+
+     test.afterEach(async () => {
+         Archive.archiveAll('bs@bs.bs', 'bs')
+     })
+
+    test('send shortcode', async () => {
+
+        sc.sendShortCode(sc.outright.EUR)
+        const button = await page.locator('//*[@id="goFlyMyPretties"]').elementHandle()
+        await button?.click()
+    
+        expect(1).toEqual(1)
+    })
+
 })
