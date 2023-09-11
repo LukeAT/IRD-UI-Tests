@@ -1,4 +1,4 @@
-class RFQStates {
+class RFQState {
     
     static State = {
         new: "NEW",

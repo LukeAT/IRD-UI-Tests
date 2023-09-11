@@ -2,14 +2,16 @@ import { Locator, Page } from "@playwright/test"
 
  class SignIn {
 
-    emailField: Locator
-    pwdField: Locator
-    logInBtn: Locator
-    enablePopUp: Locator
-    remindMePopUp: Locator
+    private readonly page: Page
+    readonly emailField: Locator
+    readonly pwdField: Locator
+    readonly logInBtn: Locator
+    readonly enablePopUp: Locator
+    readonly remindMePopUp: Locator
 
     constructor(page: Page){
 
+        this.page = page
         this.emailField = page.locator('#Email')
         this.pwdField = page.locator('#Password')
         this.logInBtn = page.getByRole('button').filter({ hasText: 'Log In' })

@@ -1,5 +1,6 @@
 import { test, expect, Page, BrowserContext } from "@playwright/test";
 import SignIn from "../Components/signin";
+import BasePage from "../Components/basePage";
 
 test.describe('Home', () => {
 
@@ -10,7 +11,6 @@ test.describe('Home', () => {
     let signIn: SignIn
     let outrightShortCode: string[] = []
     let ExpectedRFQState: string[] = []
-    let sc: SendShortcode
 
     test.beforeAll(async ({ browser }) => {
 
@@ -19,7 +19,6 @@ test.describe('Home', () => {
 
         bsPage = await bsContext.newPage()
         ssPage = await ssContext.newPage()
-        signIn = new SignIn
 
         signIn.signIn(bsPage, User.bsUser.Outright, User.bsPwd.Outright)
         signIn.signIn(ssPage, User.ssUser.Outright, User.ssPwd.Outright)
@@ -35,46 +34,44 @@ test.describe('Home', () => {
 
     })
 
+    outrightShortCode = [
+        ShortCodes.outright.GBP,
+        ShortCodes.XCSFixFloat.EUR,
+        ShortCodes.outright.USD
+    ]
+
+    ExpectedRFQState = [
+        RFQState.State.acknowledged,
+        RFQState.State.done,
+        RFQState.State.quoted
+    ]
 
     for (const i of outrightShortCode) {
-
-        outrightShortCode = [
-            ShortCodes.outright.GBP, //1
-            ShortCodes.XCSFixFloat.EUR, //2
-            ShortCodes.outright.USD //3
-        ]
-
-        ExpectedRFQState = [
-            RFQStates.State.acknowledged, //1
-            RFQStates.State.quoted, //2
-            RFQStates.State.done //3
-        ]
-
         test(`send ${outrightShortCode[i]} and receive ${ExpectedRFQState[i]}.`, async () => {
 
             await test.step('GIVEN buyside loads RFQ from Shortcode.', async () => {
-                sc.sendShortCode(outrightShortCode[i])
+                BasePage.loadShortcode(outrightShortCode[i])
             })
             await test.step('AND buyside sends RFQ.', async () => {
-    
+
                 const blotterSendBtn = bsPage.getByRole("button").filter({ hasText: "Send" })
                 const bankBtn = bsPage.locator('//*[@id="MWMEGA-desk233-org70"]')
                 const sendPanelSendBtn = bsPage.locator("//button[@id='submitButton']")
-    
+
                 await blotterSendBtn.click()
                 await bankBtn.click()
                 await sendPanelSendBtn.click()
-    
+
             })
             await test.step('WHEN sellside acknowledges the RFQ.', async () => {
                 const ackBtn = ssPage.getByRole("button").filter({ hasText: "Acknowledge" })
                 await ackBtn.click()
-    
+
             })
             await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
                 await expect(bsPage.locator('.State--Acknowledged--3IDo1')).toHaveText(ExpectedRFQState[i])
             })
         })
     }
-    
+
 })
