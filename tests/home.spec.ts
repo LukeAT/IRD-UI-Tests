@@ -8,18 +8,29 @@ test.describe('Home', () => {
     let ssContext: BrowserContext
     let bsPage: Page
     let ssPage: Page
+    let bsBasePage: BasePage
+    let ssBasePage: BasePage
     let signIn: SignIn
     let outrightShortCode: string[] = []
     let ExpectedRFQState: string[] = []
 
     test.beforeAll(async ({ browser }) => {
 
+        //Create bs and ss browser contexts.
         bsContext = await browser.newContext()
         ssContext = await browser.newContext()
 
+        //Create bs and ss pages within respective contexts.
         bsPage = await bsContext.newPage()
         ssPage = await ssContext.newPage()
 
+        //Instantiate bs page objects.
+        bsBasePage = new BasePage(bsPage)
+
+        //Instantiate ss page objects.
+        ssBasePage = new BasePage(ssPage)
+
+        //Sign in to bid.
         signIn.signIn(bsPage, User.bsUser.Outright, User.bsPwd.Outright)
         signIn.signIn(ssPage, User.ssUser.Outright, User.ssPwd.Outright)
     })
@@ -31,13 +42,12 @@ test.describe('Home', () => {
     test.afterAll(async () => {
         await bsPage.close()
         await ssPage.close()
-
     })
 
     outrightShortCode = [
-        ShortCodes.outright.GBP,
-        ShortCodes.XCSFixFloat.EUR,
-        ShortCodes.outright.USD
+        Shortcodes.outright.GBP,
+        Shortcodes.XCSFixFloat.EUR,
+        Shortcodes.outright.USD
     ]
 
     ExpectedRFQState = [
@@ -50,7 +60,7 @@ test.describe('Home', () => {
         test(`send ${outrightShortCode[i]} and receive ${ExpectedRFQState[i]}.`, async () => {
 
             await test.step('GIVEN buyside loads RFQ from Shortcode.', async () => {
-                BasePage.loadShortcode(outrightShortCode[i])
+                bsBasePage.loadShortcode(outrightShortCode[i])
             })
             await test.step('AND buyside sends RFQ.', async () => {
 

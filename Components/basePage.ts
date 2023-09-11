@@ -17,6 +17,7 @@ class BasePage {
     }
 
     async loadShortcode(shortcode: string) {
+        await this.shortCodeInput.clear()
         await this.shortCodeInput.fill(shortcode)
         await this.goButton.click()
     }
