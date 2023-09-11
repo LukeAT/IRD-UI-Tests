@@ -1,6 +1,7 @@
 import { Page, Locator } from "@playwright/test";
 
-class Blotter {
+class BasePage {
+
     private page: Page;
     shortCodeInput: Locator;
     irsTab: Locator;
@@ -12,8 +13,7 @@ class Blotter {
         this.shortCodeInput = page.locator('//input[@id="shortCodeEntry"]')
         this.goButton = page.locator('//*[@id="goFlyMyPretties"]')
     }
-
-   
+       
 }
 
-export default Blotter;
+export default BasePage;

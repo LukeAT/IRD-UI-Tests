@@ -1,21 +1,28 @@
-import { test, expect, Page } from "@playwright/test";
-import Athenticate from "../Utils/authenticate"
+import { test, expect, Page, BrowserContext } from "@playwright/test";
+import SignIn from "../Components/signin";
 
 test.describe('Home', () => {
 
+    let bsContext: BrowserContext
+    let ssContext: BrowserContext
     let bsPage: Page
     let ssPage: Page
-    let auth: Athenticate
+    let signIn: SignIn
     let outrightShortCode: string[] = []
     let ExpectedRFQState: string[] = []
+    let sc: SendShortcode
 
     test.beforeAll(async ({ browser }) => {
-        bsPage = await browser.newPage()
-        ssPage = await browser.newPage()
-        auth = new Athenticate
 
-        auth.signIn(bsPage, User.bsUser.Outright, User.bsPwd.Outright)
-        auth.signIn(ssPage, User.ssUser.Outright, User.ssPwd.Outright)
+        bsContext = await browser.newContext()
+        ssContext = await browser.newContext()
+
+        bsPage = await bsContext.newPage()
+        ssPage = await ssContext.newPage()
+        signIn = new SignIn
+
+        signIn.signIn(bsPage, User.bsUser.Outright, User.bsPwd.Outright)
+        signIn.signIn(ssPage, User.ssUser.Outright, User.ssPwd.Outright)
     })
 
     test.afterEach(async () => {

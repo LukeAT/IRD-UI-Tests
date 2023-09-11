@@ -1,6 +1,6 @@
 class RFQStates {
     
-    static RFQState = {
+    static State = {
         new: "NEW",
         sent: "SENT",
         acknowledged: "ACKNOWLEDGED",
