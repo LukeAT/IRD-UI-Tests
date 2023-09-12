@@ -1,10 +1,7 @@
 class RFQState {
-    
-    static State = {
-        new: "NEW",
-        sent: "SENT",
-        acknowledged: "ACKNOWLEDGED",
-        quoted: "QUOTED",
-        done: "DONE",
-    }
+    public static new: string = "NEW"
+    public static sent: string = "SENT"
+    public static acknowledged: string = "ACKNOWLEDGED"
+    public static quoted: string = "QUOTED"
+    public static done: string = "DONE"
 }

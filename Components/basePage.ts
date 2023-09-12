@@ -1,6 +1,6 @@
 import { Page, Locator } from "@playwright/test";
 
-class BasePage {
+export default class BasePage {
 
     private readonly page: Page;
     readonly shortCodeInput: Locator;
@@ -23,5 +23,3 @@ class BasePage {
     }
 
 }
-
-export default BasePage;

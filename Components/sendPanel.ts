@@ -1,6 +1,6 @@
 import { Locator, Page } from "@playwright/test";
 
-class sendPanel {
+export default class sendPanel {
 
     readonly bankBtn: Locator;
     readonly SendBtn: Locator;
@@ -12,4 +12,3 @@ class sendPanel {
 
 }
 
-export default sendPanel

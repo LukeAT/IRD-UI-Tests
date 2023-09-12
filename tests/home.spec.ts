@@ -1,18 +1,22 @@
 import { test, expect, Page, BrowserContext } from "@playwright/test";
 import SignIn from "../Components/signin";
 import BasePage from "../Components/basePage";
+import auth from "../Data/signInDetails.json"
+import sc from "../Data/shortcodes.json"
 
-test.describe('Home', () => {
+
+test.describe('outrightTests', () => {
 
     let bsContext: BrowserContext
     let ssContext: BrowserContext
     let bsPage: Page
     let ssPage: Page
+    let bsSignInPage: SignIn
+    let ssSignInPage: SignIn
     let bsBasePage: BasePage
     let ssBasePage: BasePage
-    let signIn: SignIn
-    let outrightShortCode: string[] = []
-    let ExpectedRFQState: string[] = []
+    let testShortCodes: string[] = []
+    let ExpectedRFQStates: string[] = []
 
     test.beforeAll(async ({ browser }) => {
 
@@ -25,14 +29,16 @@ test.describe('Home', () => {
         ssPage = await ssContext.newPage()
 
         //Instantiate bs page objects.
+        bsSignInPage = new SignIn(bsPage)
         bsBasePage = new BasePage(bsPage)
 
         //Instantiate ss page objects.
+        ssSignInPage
         ssBasePage = new BasePage(ssPage)
 
         //Sign in to bid.
-        signIn.signIn(bsPage, User.bsUser.Outright, User.bsPwd.Outright)
-        signIn.signIn(ssPage, User.ssUser.Outright, User.ssPwd.Outright)
+        bsSignInPage.signIn(bsPage, auth.outright.BSUsr.userOne.username, auth.outright.BSUsr.userOne.password)
+        ssSignInPage.signIn(ssPage, auth.outright.SSUsr.userOne.username, auth.outright.SSUsr.userOne.password)
     })
 
     test.afterEach(async () => {
@@ -44,20 +50,25 @@ test.describe('Home', () => {
         await ssPage.close()
     })
 
-    outrightShortCode = [
-        Shortcodes.outright.GBP,
-        Shortcodes.XCSFixFloat.EUR,
-        Shortcodes.outright.USD
+
+
+
+
+
+
+
+    testShortCodes = [
+        sc.outright.EUR, sc.outright.GBP, sc.outright.USD
     ]
 
-    ExpectedRFQState = [
-        RFQState.State.acknowledged,
-        RFQState.State.done,
-        RFQState.State.quoted
+    ExpectedRFQStates = [
+        RFQState.acknowledged,
+        RFQState.new,
+        RFQState.quoted
     ]
 
-    for (const i of outrightShortCode) {
-        test(`send ${outrightShortCode[i]} and receive ${ExpectedRFQState[i]}.`, async () => {
+    for (const shortCode of testShortCodes) {
+        test(`send ${shortCode} and receive ${ExpectedRFQStates[send]}.`, async () => {
 
             await test.step('GIVEN buyside loads RFQ from Shortcode.', async () => {
                 bsBasePage.loadShortcode(outrightShortCode[i])

@@ -1,6 +1,8 @@
 import { Locator, Page } from "@playwright/test"
+import * as fs from 'fs';
 
- class SignIn {
+
+class SignIn {
 
     private readonly page: Page
     readonly emailField: Locator
@@ -9,7 +11,7 @@ import { Locator, Page } from "@playwright/test"
     readonly enablePopUp: Locator
     readonly remindMePopUp: Locator
 
-    constructor(page: Page){
+    constructor(page: Page) {
 
         this.page = page
         this.emailField = page.locator('#Email')
@@ -19,10 +21,10 @@ import { Locator, Page } from "@playwright/test"
         this.remindMePopUp = page.getByRole('button').filter({ hasText: 'Remind Me in 14 days.' })
 
     }
- 
-    async signIn (page: Page, username: string, password: string ) {
-        
-        //uses base URL in plawyright.config.
+
+    async signIn(page: Page, username: string, password: string) {
+
+          //uses base URL in plawyright.config.
         page.goto('/')
 
         // Sign-in modal.

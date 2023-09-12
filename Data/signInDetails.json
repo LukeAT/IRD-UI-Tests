@@ -1,0 +1,47 @@
+
+{
+    "outright": {
+        "BSUsr": {
+            "userOne": {
+                "username": "OutrightBs1Un",
+                "password": "OutrightBs1Pwd"
+            },
+            "userTwo": {
+                "username": "OutrightBs2Un",
+                "password": "OutrightBs2Pwd"
+            }
+        },
+        "SSUsr": {
+            "userOne": {
+                "username": "OutrightSs1Un",
+                "password": "OutrightSs1Pwd"
+            },
+            "userTwo": {
+                "username": "OutrightSs2Un",
+                "password": "OutrightSs2Pwd"
+            }
+        }
+    },
+    "OIS": {
+        "BSUsr": {
+            "userOne": {
+                "username": "OISBs1Un",
+                "password": "OISBs1Pwd"
+            },
+            "userTwo": {
+                "username": "OISBs2Un",
+                "password": "OISBs2Pwd"
+            }
+        },
+        "SSUsr": {
+            "userOne": {
+                "username": "OISSs1Un",
+                "password": "OISSs1Pwd"
+            },
+            "userTwo": {
+                "username": "OISSs2Un",
+                "password": "OISSs2Pwd"
+            }
+        }
+    }
+}
