@@ -1,13 +1,11 @@
 import { test, expect, Page, BrowserContext } from "@playwright/test";
-import SignIn from "../Components/signin";
-import BasePage from "../Components/basePage";
-import auth from "../Data/signInDetails.json"
-import sc from "../Data/shortcodes.json"
-import rfqState from "../Data/rfqStates.json"
-import SendPanel from "../Components/sendPanel";
+import SignIn from "../../../Components/signin";
+import BasePage from "../../../Components/basePage";
+import auth from "../../../Data/signInDetails.json"
+import SendPanel from "../../../Components/sendPanel";
 
 
-test.describe('outrightTests', () => {
+test.describe('basis tests', () => {
 
     //Use soft assertions.
     const sExpect = expect.configure({ soft: true });
@@ -25,10 +23,6 @@ test.describe('outrightTests', () => {
     let ssBasePage: BasePage
     let sendPanel: SendPanel
 
-    //Arrays for test parameterisation.
-    let testShortCodes: string[] = []
-    let expectedRFQStates: string[] = []
-
     test.beforeAll(async ({ browser }) => {
 
         //Instantiate buyside browser-context, context-page and page-objects.
@@ -36,6 +30,7 @@ test.describe('outrightTests', () => {
         bsPage = await bsContext.newPage()
         bsSignInPage = new SignIn(bsPage)
         bsBasePage = new BasePage(bsPage)
+        sendPanel = new SendPanel(bsPage)
 
         //Instantiate sellside browser-context, context-page and page-objects.
         ssContext = await browser.newContext()
@@ -57,21 +52,10 @@ test.describe('outrightTests', () => {
         await ssContext.close()
     })
 
-    testShortCodes = [
-        sc.basis.close
-    ]
-
-    expectedRFQStates = [
-        rfqState.acknowledged,
-        rfqState.affirmed,
-        rfqState.done
-    ]
-
-    for (let i = 0; i < testShortCodes.length; i++) {
-        test(`send five outright shortcode and receive 5 correct RFQ states.${i}`, async () => {
+        test(`send outright shortcode and verify rfq status after ss acknowledges`, async () => {
 
             await test.step('GIVEN buyside loads RFQ from Shortcode.', async () => {
-                bsBasePage.loadShortcode(testShortCodes[i])
+                bsBasePage.loadShortcode('p usd 5y not 44mm')
             })
             await test.step('AND buyside sends RFQ.', async () => {
 
@@ -85,9 +69,9 @@ test.describe('outrightTests', () => {
 
             })
             await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
-                await sExpect(bsPage.locator('.State--Acknowledged--3IDo1')).toHaveText(expectedRFQStates[i])
+                await sExpect(bsPage.locator('.State--Acknowledged--3IDo1')).toHaveText("ACKNOWLEDGED")
             })
         })
-    }
+    
 
 })

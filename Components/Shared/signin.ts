@@ -1,25 +1,25 @@
 import { Locator, Page } from "@playwright/test"
-import * as fs from 'fs';
-
+import BasePage from "./basePage"
 
 class SignIn {
 
-    private readonly page: Page
+    readonly page: Page
     readonly emailField: Locator
     readonly pwdField: Locator
     readonly logInBtn: Locator
     readonly enablePopUp: Locator
     readonly remindMePopUp: Locator
+    readonly irsTab: Locator
 
     constructor(page: Page) {
-
         this.page = page
+        this.irsTab = page.getByText('IRS')    
         this.emailField = page.locator('#Email')
         this.pwdField = page.locator('#Password')
         this.logInBtn = page.getByRole('button').filter({ hasText: 'Log In' })
         this.enablePopUp = page.getByRole('button').filter({ hasText: 'Enable' })
         this.remindMePopUp = page.getByRole('button').filter({ hasText: 'Remind Me in 14 days.' })
-
+        
     }
 
     async signIn(page: Page, username: string, password: string) {
@@ -35,6 +35,7 @@ class SignIn {
         // Get through first time sign in pop-ups.
         await this.enablePopUp.click()
         await this.remindMePopUp.click()
+        await this.irsTab.click()
     }
 }
 

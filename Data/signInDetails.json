@@ -3,8 +3,8 @@
     "outright": {
         "BSUsr": {
             "userOne": {
-                "username": "OutrightBs1Un",
-                "password": "OutrightBs1Pwd"
+                "username": "bs@bs.bs",
+                "password": "bs"
             },
             "userTwo": {
                 "username": "OutrightBs2Un",
@@ -13,8 +13,8 @@
         },
         "SSUsr": {
             "userOne": {
-                "username": "OutrightSs1Un",
-                "password": "OutrightSs1Pwd"
+                "username": "u1d1@ss1.ss",
+                "password": "ss"
             },
             "userTwo": {
                 "username": "OutrightSs2Un",

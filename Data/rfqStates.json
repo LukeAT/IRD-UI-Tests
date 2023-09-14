@@ -1,8 +1,5 @@
 {
-    "new": "NEW",
-    "acknowledged": "ACKNOWLEDGED",
-    "quoted": "QUOTED",
-    "awarded": "AWARDED",
-    "done": "DONE",
-    "affirmed": "AFFIRMED"
+    "new": "New",
+    "acknowledged": "Acknowledged",
+    "quoted": "Quoted"
 }
