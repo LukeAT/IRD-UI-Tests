@@ -12,7 +12,7 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
-  fullyParallel: false,
+  fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -33,8 +33,21 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
+      name: 'outright',
       use: { ...devices['Desktop Chrome'] },
+      testMatch: 'Outright.spec.ts',
+    },
+
+    {
+      name: 'inflation',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: 'Inflation.spec.ts',
+    },
+
+    {
+      name: 'overnightIndex',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: 'Overnight-Index.spec.ts',
     },
 
     // {

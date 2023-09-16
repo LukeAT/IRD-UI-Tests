@@ -13,10 +13,11 @@
         "workflow": [
             "Multiple sellsides",
             "Reject details",
-            "Off Quote"
+            "Off Quote",
+            "Dealt Away"
         ]
     },
-    "The main purpose of the standard workflow is to verify values such as...": {
+    "The main purpose of the standard workflow is to verify values such as ...": {
         "Inspector tabs": [
             "Summary",
             "Instrument details",

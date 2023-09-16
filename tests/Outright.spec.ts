@@ -1,13 +1,13 @@
 import { test, expect, Page, BrowserContext } from "@playwright/test";
-import SignIn from "../../../Components/Shared/signin";
-import BuysidePage from "../../../Components//Buyside/bsPage";
-import auth from "../../../Data/signInDetails.json"
-import SendPanel from "../../../Components/Buyside/sendPanel";
-import rfqState from "../../../Data/rfqStates.json"
-import SellsidePage from "../../../Components/Sellside/ssPage";
+import SignIn from "../Components/Shared/signin";
+import BuysidePage from "../Components/Buyside/bsPage";
+import auth from "../Data/signInDetails.json"
+import SendPanel from "../Components/Buyside/sendPanel";
+import rfqState from "../Data/rfqStates.json"
+import SellsidePage from "../Components/Sellside/ssPage";
 
 
-test.describe('basis tests', () => {
+test.describe.serial('basis tests', () => {
 
     //Use soft assertions.
     const sExpect = expect.configure({ soft: true });
@@ -54,7 +54,7 @@ test.describe('basis tests', () => {
         await ssContext.close()
     })
 
-        test(`send outright shortcode and verify rfq status after ss acknowledges`, async () => {
+        test(`FIRST send outright shortcode and verify rfq status after ss acknowledges`, async () => {
 
             await test.step('GIVEN buyside loads RFQ from Shortcode.', async () => {
                 await bs.loadShortcode('p eur 5y not 44mm')
@@ -71,7 +71,48 @@ test.describe('basis tests', () => {
 
             })
             await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
-                await ssPage.waitForTimeout(3000)
+                sExpect(await bs.blotterStatus(1)).toBe(rfqState.acknowledged)
+            })
+        })
+
+        test(`SECOND send outright shortcode and verify rfq status after ss acknowledges`, async () => {
+
+            await test.step('GIVEN buyside loads RFQ from Shortcode.', async () => {
+                await bs.loadShortcode('p eur 5y not 44mm')
+            })
+            await test.step('AND buyside sends RFQ.', async () => {
+
+                await bs.blotterSendBtn.click()
+                await sendPanel.bankBtn.click()
+                await sendPanel.SendBtn.click()
+
+            })
+            await test.step('WHEN sellside acknowledges the RFQ.', async () => {
+                await ss.ackButton.click()
+
+            })
+            await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
+                sExpect(await bs.blotterStatus(1)).toBe(rfqState.acknowledged)
+            })
+        })
+
+        test(`THIRD send outright shortcode and verify rfq status after ss acknowledges`, async () => {
+
+            await test.step('GIVEN buyside loads RFQ from Shortcode.', async () => {
+                await bs.loadShortcode('p eur 5y not 44mm')
+            })
+            await test.step('AND buyside sends RFQ.', async () => {
+
+                await bs.blotterSendBtn.click()
+                await sendPanel.bankBtn.click()
+                await sendPanel.SendBtn.click()
+
+            })
+            await test.step('WHEN sellside acknowledges the RFQ.', async () => {
+                await ss.ackButton.click()
+
+            })
+            await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
                 sExpect(await bs.blotterStatus(1)).toBe(rfqState.acknowledged)
             })
         })
