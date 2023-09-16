@@ -1,47 +1,45 @@
-
 {
     "outright": {
         "BSUsr": {
-            "userOne": {
-                "username": "bs@bs.bs",
-                "password": "bs"
-            },
-            "userTwo": {
-                "username": "OutrightBs2Un",
-                "password": "OutrightBs2Pwd"
-            }
+            "username": "outright-bs@u1.d1",
+            "password": "bs"
         },
-        "SSUsr": {
-            "userOne": {
-                "username": "u1d1@ss1.ss",
-                "password": "ss"
-            },
-            "userTwo": {
-                "username": "OutrightSs2Un",
-                "password": "OutrightSs2Pwd"
-            }
+        "SSUsr1": {
+            "username": "outright-ss@u1.d1",
+            "password": "ss"
+        },
+        "SSUsr2": {
+            "username": "outright-ss@u1.d2",
+            "password": "ss"
         }
     },
     "OIS": {
-        "BSUsr": {
-            "userOne": {
-                "username": "OISBs1Un",
-                "password": "OISBs1Pwd"
-            },
-            "userTwo": {
-                "username": "OISBs2Un",
-                "password": "OISBs2Pwd"
-            }
+        "bs": {
+            "username": "ois-bs@u1.d1",
+            "password": "bs"
         },
-        "SSUsr": {
-            "userOne": {
-                "username": "OISSs1Un",
-                "password": "OISSs1Pwd"
-            },
-            "userTwo": {
-                "username": "OISSs2Un",
-                "password": "OISSs2Pwd"
-            }
+        "ss1": {
+            "username": "ois-ss@u1.d1",
+            "password": "ss"
+        },
+        "ss2": {
+            "username": "ois-ss@u1.d2",
+            "password": "ss"
+        }
+    },
+    "INF": {
+        "bs": {
+            "username": "inf-bs@u1.d1",
+            "password": "bs"
+        },
+        "ss1": {
+            "username": "inf-ss@u1.d1",
+            "password": "ss"
+        },
+        "ss2": {
+            "username": "inf-ss@u1.d2",
+            "password": "ss"
         }
     }
+
 }

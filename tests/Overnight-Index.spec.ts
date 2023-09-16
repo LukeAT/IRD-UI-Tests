@@ -7,7 +7,7 @@ import rfqState from "../Data/rfqStates.json"
 import SellsidePage from "../Components/Sellside/ssPage";
 
 
-test.describe.serial('basis tests', () => {
+test.describe('basis tests', () => {
 
     //Use soft assertions.
     const sExpect = expect.configure({ soft: true });
@@ -40,9 +40,11 @@ test.describe.serial('basis tests', () => {
         ssSignInPage = new SignIn(ssPage)
         ss = new SellsidePage(ssPage)
 
-        //Sign in to bid.
-        bsSignInPage.signIn(bsPage, auth.outright.BSUsr.userOne.username, auth.outright.BSUsr.userOne.password)
-        ssSignInPage.signIn(ssPage, auth.outright.SSUsr.userOne.username, auth.outright.SSUsr.userOne.password)
+        //Sign and archive all before running all tests.
+        await bsSignInPage.signIn(bsPage, auth.OIS.bs.username, auth.OIS.bs.password)
+        await bsPage.goto('/api/bid/archiveallthethingsquickly')
+        await bsPage.goto('/')
+        await ssSignInPage.signIn(ssPage, auth.OIS.ss1.username, auth.OIS.ss1.password)
     })
 
     test.afterEach(async () => {
