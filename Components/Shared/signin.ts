@@ -1,7 +1,6 @@
 import { Locator, Page } from "@playwright/test"
-import BasePage from "./basePage"
 
-class SignIn {
+export default class SignIn{
 
     readonly page: Page
     readonly emailField: Locator
@@ -9,11 +8,9 @@ class SignIn {
     readonly logInBtn: Locator
     readonly enablePopUp: Locator
     readonly remindMePopUp: Locator
-    readonly irsTab: Locator
 
     constructor(page: Page) {
         this.page = page
-        this.irsTab = page.getByText('IRS')    
         this.emailField = page.locator('#Email')
         this.pwdField = page.locator('#Password')
         this.logInBtn = page.getByRole('button').filter({ hasText: 'Log In' })
@@ -24,7 +21,7 @@ class SignIn {
 
     async signIn(page: Page, username: string, password: string) {
 
-          //uses base URL in plawyright.config.
+        //uses base URL in plawyright.config.
         page.goto('/')
 
         // Sign-in modal.
@@ -35,8 +32,5 @@ class SignIn {
         // Get through first time sign in pop-ups.
         await this.enablePopUp.click()
         await this.remindMePopUp.click()
-        await this.irsTab.click()
     }
 }
-
-export default SignIn

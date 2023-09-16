@@ -7,7 +7,7 @@ import rfqState from "../Data/rfqStates.json"
 import SellsidePage from "../Components/Sellside/ssPage";
 
 
-test.describe('basis tests', () => {
+test.describe.serial('Inflation test suite', () => {
 
     //Use soft assertions.
     const sExpect = expect.configure({ soft: true });
@@ -51,12 +51,18 @@ test.describe('basis tests', () => {
         await bsPage.goto('/api/bid/archiveallthethingsquickly')
     })
 
+    test.beforeEach(async () => {
+        await bsPage.goto('/')
+        await ssPage.goto('/')
+    })
+    
+
     test.afterAll(async () => {
         await bsContext.close()
         await ssContext.close()
     })
 
-        test(`FIRST send inflation shortcode and verify rfq status after ss acknowledges`, async () => {
+        test(`FIRST send outright shortcode and verify rfq status after ss acknowledges`, async () => {
 
             await test.step('GIVEN buyside loads RFQ from Shortcode.', async () => {
                 await bs.loadShortcode('p eur 5y not 44mm')
@@ -73,11 +79,12 @@ test.describe('basis tests', () => {
 
             })
             await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
+                await bsPage.waitForTimeout(5000)
                 sExpect(await bs.blotterStatus(1)).toBe(rfqState.acknowledged)
             })
         })
 
-        test(`SECOND send inflation shortcode and verify rfq status after ss acknowledges`, async () => {
+        test(`SECOND send outright shortcode and verify rfq status after ss acknowledges`, async () => {
 
             await test.step('GIVEN buyside loads RFQ from Shortcode.', async () => {
                 await bs.loadShortcode('p eur 5y not 44mm')
@@ -94,11 +101,12 @@ test.describe('basis tests', () => {
 
             })
             await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
+                await bsPage.waitForTimeout(5000)
                 sExpect(await bs.blotterStatus(1)).toBe(rfqState.acknowledged)
             })
         })
 
-        test(`THIRD send inflation shortcode and verify rfq status after ss acknowledges`, async () => {
+        test(`THIRD send outright shortcode and verify rfq status after ss acknowledges`, async () => {
 
             await test.step('GIVEN buyside loads RFQ from Shortcode.', async () => {
                 await bs.loadShortcode('p eur 5y not 44mm')
@@ -115,6 +123,7 @@ test.describe('basis tests', () => {
 
             })
             await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
+                await bsPage.waitForTimeout(5000)
                 sExpect(await bs.blotterStatus(1)).toBe(rfqState.acknowledged)
             })
         })

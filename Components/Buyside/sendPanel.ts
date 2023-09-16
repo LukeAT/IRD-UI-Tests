@@ -8,9 +8,8 @@ export default class SendPanel {
 
     constructor(page: Page) {
         this.page = page
-        this.bankBtn = page.locator('//*[@id="SS1-desk2-org3"]')
+        this.bankBtn = page.getByRole("button").filter({ hasText: 'MWMEGA'})
         this.SendBtn = page.locator("//button[@id='submitButton']")
     }
-
 }
 

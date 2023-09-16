@@ -7,7 +7,7 @@ import rfqState from "../Data/rfqStates.json"
 import SellsidePage from "../Components/Sellside/ssPage";
 
 
-test.describe('basis tests', () => {
+test.describe.serial('outright test suite', () => {
 
     //Use soft assertions.
     const sExpect = expect.configure({ soft: true });
@@ -41,15 +41,21 @@ test.describe('basis tests', () => {
         ss = new SellsidePage(ssPage)
 
         //Sign in to bid.
-        await bsSignInPage.signIn(bsPage, auth.outright.BSUsr.username, auth.outright.BSUsr.password)
+        await bsSignInPage.signIn(bsPage, auth.outright.bs.username, auth.outright.bs.password)
         await bsPage.goto('/api/bid/archiveallthethingsquickly')
         await bsPage.goto('/')
-        await ssSignInPage.signIn(ssPage, auth.outright.SSUsr1.username, auth.outright.SSUsr1.password)
+        await ssSignInPage.signIn(ssPage, auth.outright.ss1.username, auth.outright.ss1.password)
     })
 
     test.afterEach(async () => {
         await bsPage.goto('/api/bid/archiveallthethingsquickly')
     })
+
+    test.beforeEach(async () => {
+        await bsPage.goto('/')
+        await ssPage.goto('/')
+    })
+    
 
     test.afterAll(async () => {
         await bsContext.close()
@@ -70,9 +76,9 @@ test.describe('basis tests', () => {
             })
             await test.step('WHEN sellside acknowledges the RFQ.', async () => {
                 await ss.ackButton.click()
-
             })
             await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
+                await bsPage.waitForTimeout(5000)
                 sExpect(await bs.blotterStatus(1)).toBe(rfqState.acknowledged)
             })
         })
@@ -94,6 +100,7 @@ test.describe('basis tests', () => {
 
             })
             await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
+                await bsPage.waitForTimeout(5000)
                 sExpect(await bs.blotterStatus(1)).toBe(rfqState.acknowledged)
             })
         })
@@ -115,6 +122,7 @@ test.describe('basis tests', () => {
 
             })
             await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
+                await bsPage.waitForTimeout(5000)
                 sExpect(await bs.blotterStatus(1)).toBe(rfqState.acknowledged)
             })
         })

@@ -1,43 +1,31 @@
 {
     "outright": {
-        "BSUsr": {
-            "username": "outright-bs@u1.d1",
+        "bs": {
+            "username": "outright-bs-user@uitest.com",
             "password": "bs"
         },
-        "SSUsr1": {
-            "username": "outright-ss@u1.d1",
-            "password": "ss"
-        },
-        "SSUsr2": {
-            "username": "outright-ss@u1.d2",
+        "ss1": {
+            "username": "outright-ss-user@uitest.com",
             "password": "ss"
         }
     },
     "OIS": {
         "bs": {
-            "username": "ois-bs@u1.d1",
+            "username": "ois-bs-user@uitest.com",
             "password": "bs"
         },
         "ss1": {
-            "username": "ois-ss@u1.d1",
-            "password": "ss"
-        },
-        "ss2": {
-            "username": "ois-ss@u1.d2",
+            "username": "ois-ss-user@uitest.com",
             "password": "ss"
         }
     },
     "INF": {
         "bs": {
-            "username": "inf-bs@u1.d1",
+            "username": "inf-bs-user@uitest.com",
             "password": "bs"
         },
         "ss1": {
-            "username": "inf-ss@u1.d1",
-            "password": "ss"
-        },
-        "ss2": {
-            "username": "inf-ss@u1.d2",
+            "username": "inf-ss-user@uitest.com",
             "password": "ss"
         }
     }
