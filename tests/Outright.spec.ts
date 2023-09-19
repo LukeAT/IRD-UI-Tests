@@ -56,11 +56,10 @@ test.describe.serial('outright test suite', () => {
         await ssPage.goto('/')
     })
     
-
-    test.afterAll(async () => {
-        await bsContext.close()
-        await ssContext.close()
-    })
+    // test.afterAll(async () => {
+    //     await bsContext.close()
+    //     await ssContext.close()
+    // })
 
         test(`FIRST send outright shortcode and verify rfq status after ss acknowledges`, async () => {
 
@@ -78,8 +77,7 @@ test.describe.serial('outright test suite', () => {
                 await ss.ackButton.click()
             })
             await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
-                await bsPage.waitForTimeout(5000)
-                sExpect(await bs.blotterStatus(1)).toBe(rfqState.acknowledged)
+                await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
             })
         })
 
@@ -100,8 +98,7 @@ test.describe.serial('outright test suite', () => {
 
             })
             await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
-                await bsPage.waitForTimeout(5000)
-                sExpect(await bs.blotterStatus(1)).toBe(rfqState.acknowledged)
+                await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
             })
         })
 
@@ -122,8 +119,7 @@ test.describe.serial('outright test suite', () => {
 
             })
             await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
-                await bsPage.waitForTimeout(5000)
-                sExpect(await bs.blotterStatus(1)).toBe(rfqState.acknowledged)
+                await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
             })
         })
 })

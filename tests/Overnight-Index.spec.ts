@@ -55,7 +55,6 @@ test.describe.serial('overnight-index test suite', () => {
         await bsPage.goto('/')
         await ssPage.goto('/')
     })
-    
 
     test.afterAll(async () => {
         await bsContext.close()
@@ -79,8 +78,7 @@ test.describe.serial('overnight-index test suite', () => {
 
             })
             await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
-                await bsPage.waitForTimeout(5000)
-                sExpect(await bs.blotterStatus(1)).toBe(rfqState.acknowledged)
+                await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
             })
         })
 
@@ -101,8 +99,7 @@ test.describe.serial('overnight-index test suite', () => {
 
             })
             await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
-                await bsPage.waitForTimeout(5000)
-                sExpect(await bs.blotterStatus(1)).toBe(rfqState.acknowledged)
+                await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
             })
         })
 
@@ -123,8 +120,7 @@ test.describe.serial('overnight-index test suite', () => {
 
             })
             await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
-                await bsPage.waitForTimeout(5000)
-                sExpect(await bs.blotterStatus(1)).toBe(rfqState.acknowledged)
+                await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
             })
         })
 })

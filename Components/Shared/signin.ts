@@ -21,15 +21,15 @@ export default class SignIn{
 
     async signIn(page: Page, username: string, password: string) {
 
-        //uses base URL in plawyright.config.
+        //Uses base URL in plawyright.config.
         page.goto('/')
 
-        // Sign-in modal.
+        //Sign-in modal.
         await this.emailField.fill(username)
         await this.pwdField.fill(password)
         await this.logInBtn.click()
 
-        // Get through first time sign in pop-ups.
+        //Get through first time sign in pop-ups.
         await this.enablePopUp.click()
         await this.remindMePopUp.click()
     }

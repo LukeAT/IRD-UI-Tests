@@ -1,31 +1,31 @@
 {
     "outright": {
         "bs": {
-            "username": "outright-bs-user@uitest.com",
+            "username": "bs-user@out.test",
             "password": "bs"
         },
         "ss1": {
-            "username": "outright-ss-user@uitest.com",
+            "username": "ss-user@out.test",
             "password": "ss"
         }
     },
     "OIS": {
         "bs": {
-            "username": "ois-bs-user@uitest.com",
+            "username": "bs-user@ois.test",
             "password": "bs"
         },
         "ss1": {
-            "username": "ois-ss-user@uitest.com",
+            "username": "ss-user@ois.test",
             "password": "ss"
         }
     },
     "INF": {
         "bs": {
-            "username": "inf-bs-user@uitest.com",
+            "username": "bs-user@inf.test",
             "password": "bs"
         },
         "ss1": {
-            "username": "inf-ss-user@uitest.com",
+            "username": "ss-user@inf.test",
             "password": "ss"
         }
     }

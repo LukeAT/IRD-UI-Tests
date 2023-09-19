@@ -17,8 +17,9 @@ export default class BuysidePage extends BasePage {
     }
 
     async loadShortcode(shortcode: string) {
-        await this.irsTab.click()
-        await this.shortCodeInput.clear()
+        if(await this.irsTab.isVisible()){
+            await this.irsTab.click()
+        }
         await this.shortCodeInput.fill(shortcode)
         await this.goButton.click()
     }
