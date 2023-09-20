@@ -61,7 +61,7 @@ test.describe.serial('overnight-index test suite', () => {
         await ssContext.close()
     })
 
-        test(`FIRST send outright shortcode and verify rfq status after ss acknowledges`, async () => {
+        test(`FIRST send OIS shortcode and verify rfq status after ss acknowledges`, async () => {
 
             await test.step('GIVEN buyside loads RFQ from Shortcode.', async () => {
                 await bs.loadShortcode('p eur 5y not 44mm')
@@ -82,7 +82,7 @@ test.describe.serial('overnight-index test suite', () => {
             })
         })
 
-        test(`SECOND send outright shortcode and verify rfq status after ss acknowledges`, async () => {
+        test(`SECOND send OIS shortcode and verify rfq status after ss acknowledges`, async () => {
 
             await test.step('GIVEN buyside loads RFQ from Shortcode.', async () => {
                 await bs.loadShortcode('p eur 5y not 44mm')
@@ -103,7 +103,7 @@ test.describe.serial('overnight-index test suite', () => {
             })
         })
 
-        test(`THIRD send outright shortcode and verify rfq status after ss acknowledges`, async () => {
+        test(`THIRD send OIS shortcode and verify rfq status after ss acknowledges`, async () => {
 
             await test.step('GIVEN buyside loads RFQ from Shortcode.', async () => {
                 await bs.loadShortcode('p eur 5y not 44mm')

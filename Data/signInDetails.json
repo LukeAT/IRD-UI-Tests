@@ -1,31 +1,31 @@
 {
     "outright": {
         "bs": {
-            "username": "bs-user@out.test",
+            "username": "bs@out.test",
             "password": "bs"
         },
         "ss1": {
-            "username": "ss-user@out.test",
+            "username": "ss1@out.test",
             "password": "ss"
         }
     },
     "OIS": {
         "bs": {
-            "username": "bs-user@ois.test",
+            "username": "bs@ois.test",
             "password": "bs"
         },
         "ss1": {
-            "username": "ss-user@ois.test",
+            "username": "ss1@ois.test",
             "password": "ss"
         }
     },
     "INF": {
         "bs": {
-            "username": "bs-user@inf.test",
+            "username": "bs@inf.test",
             "password": "bs"
         },
         "ss1": {
-            "username": "ss-user@inf.test",
+            "username": "ss1@inf.test",
             "password": "ss"
         }
     }
