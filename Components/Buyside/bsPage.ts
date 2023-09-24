@@ -34,16 +34,26 @@ export default class BuysidePage extends BasePage {
 
     async sendShortCode(shortcode: string) {
 
+        let errorVisible = false
+
         await this.shortCodeInput.fill(shortcode)
         await this.goButton.click()
         await this.blotterSendBtn.click()
         await this.bankBtn.click()
         await this.SendBtn.click()
+
+        await this.errormsg.waitFor({state:"visible", timeout: 3000}).catch(console.log)
+
         if (await this.errormsg.isVisible()) {
-            await this.cancelButton.click()
-            await this.blotterSendBtn.click()
-            await this.bankBtn.click()
+            errorVisible = true
+        }
+
+        while (errorVisible === true) {
             await this.SendBtn.click()
+            await this.errormsg.waitFor({state:"visible", timeout: 3000}).catch(console.log)
+            if (!await this.errormsg.isVisible()) {
+                errorVisible = false
+            } 
         }
     }
 }

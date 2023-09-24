@@ -54,8 +54,8 @@ test.describe.serial('overnight-index test suite', () => {
     })
 
     test.afterAll(async () => {
-        await bsContext.close()
-        await ssContext.close()
+        //await bsContext.close()
+        //await ssContext.close()
     })
 
     test(`FIRST send OIS shortcode and verify rfq status after ss acknowledges`, async () => {

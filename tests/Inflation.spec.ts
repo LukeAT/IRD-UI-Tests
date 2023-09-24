@@ -2,6 +2,7 @@ import { test, expect, Page, BrowserContext } from "@playwright/test";
 import SignIn from "../Components/Shared/signin";
 import BuysidePage from "../Components/Buyside/bsPage";
 import auth from "../Data/signInDetails.json"
+import SendPanel from "../Components/Buyside/sendPanel";
 import rfqState from "../Data/rfqStates.json"
 import SellsidePage from "../Components/Sellside/ssPage";
 

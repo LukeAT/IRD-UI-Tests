@@ -54,8 +54,8 @@ test.describe.serial('outright test suite', () => {
     })
 
     test.afterAll(async () => {
-        await bsContext.close()
-        await ssContext.close()
+        //await bsContext.close()
+        //await ssContext.close()
     })
 
     test(`FIRST send outright shortcode and verify rfq status after ss acknowledges`, async () => {
