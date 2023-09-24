@@ -13,7 +13,7 @@ export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
   //fullyParallel: true,
-  workers: 4,
+  workers: 1,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
@@ -31,9 +31,10 @@ export default defineConfig({
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    actionTimeout: 15 *1000,
+    actionTimeout: 15 * 1000,
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'https://uat3.otcxtrading.com', //   https://uat3.otcxtrading.com   http://localhost:3000
+     baseURL: 'http://localhost:3000',
+    // baseURL: 'https://uat3.otcxtrading.com',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',

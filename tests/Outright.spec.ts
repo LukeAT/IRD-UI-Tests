@@ -74,7 +74,7 @@ test.describe.serial('outright test suite', () => {
 
             })
             await test.step('WHEN sellside acknowledges the RFQ.', async () => {
-                //await ss.ackButton.click()
+                await ss.ackButton.click()
             })
             await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
                 await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
