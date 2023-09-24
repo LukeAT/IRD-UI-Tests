@@ -2,7 +2,6 @@ import { test, expect, Page, BrowserContext } from "@playwright/test";
 import SignIn from "../Components/Shared/signin";
 import BuysidePage from "../Components/Buyside/bsPage";
 import auth from "../Data/signInDetails.json"
-import SendPanel from "../Components/Buyside/sendPanel";
 import rfqState from "../Data/rfqStates.json"
 import SellsidePage from "../Components/Sellside/ssPage";
 
@@ -17,8 +16,7 @@ test.describe.serial('outright test suite', () => {
     let bsPage: Page
     let bsSignInPage: SignIn
     let bs: BuysidePage
-    let sendPanel: SendPanel
-   
+
     //Sellside browser context and pages.
     let ssContext: BrowserContext
     let ssPage: Page
@@ -32,7 +30,6 @@ test.describe.serial('outright test suite', () => {
         bsPage = await bsContext.newPage()
         bsSignInPage = new SignIn(bsPage)
         bs = new BuysidePage(bsPage)
-        sendPanel = new SendPanel(bsPage)
 
         //Instantiate sellside browser-context, context-page and page-objects.
         ssContext = await browser.newContext()
@@ -55,71 +52,32 @@ test.describe.serial('outright test suite', () => {
         await bsPage.goto('/')
         await ssPage.goto('/')
     })
-    
+
     test.afterAll(async () => {
         await bsContext.close()
         await ssContext.close()
     })
 
-        test(`FIRST send outright shortcode and verify rfq status after ss acknowledges`, async () => {
+    test(`FIRST send outright shortcode and verify rfq status after ss acknowledges`, async () => {
 
-            await test.step('GIVEN buyside loads RFQ from Shortcode.', async () => {
-                await bs.loadShortcode('p eur 5y not 44mm')
-            })
-            await test.step('AND buyside sends RFQ.', async () => {
+        await bs.sendShortCode('p eur 5y not 44mm')
+        await ss.ackButton.click()
+        await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
 
-                await bs.blotterSendBtn.click()
-                await sendPanel.bankBtn.click()
-                await sendPanel.SendBtn.click()
+    })
 
-            })
-            await test.step('WHEN sellside acknowledges the RFQ.', async () => {
-                await ss.ackButton.click()
-            })
-            await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
-                await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
-            })
-        })
+    test(`SECOND send outright shortcode and verify rfq status after ss acknowledges`, async () => {
 
-        test(`SECOND send outright shortcode and verify rfq status after ss acknowledges`, async () => {
+        await bs.sendShortCode('p eur 5y not 44mm')
+        await ss.ackButton.click()
+        await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
+    })
 
-            await test.step('GIVEN buyside loads RFQ from Shortcode.', async () => {
-                await bs.loadShortcode('p eur 5y not 44mm')
-            })
-            await test.step('AND buyside sends RFQ.', async () => {
+    test(`THIRD send outright shortcode and verify rfq status after ss acknowledges`, async () => {
 
-                await bs.blotterSendBtn.click()
-                await sendPanel.bankBtn.click()
-                await sendPanel.SendBtn.click()
+        await bs.sendShortCode('p eur 5y not 44mm')
+        await ss.ackButton.click()
+        await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
 
-            })
-            await test.step('WHEN sellside acknowledges the RFQ.', async () => {
-                await ss.ackButton.click()
-
-            })
-            await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
-                await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
-            })
-        })
-
-        test(`THIRD send outright shortcode and verify rfq status after ss acknowledges`, async () => {
-
-            await test.step('GIVEN buyside loads RFQ from Shortcode.', async () => {
-                await bs.loadShortcode('p eur 5y not 44mm')
-            })
-            await test.step('AND buyside sends RFQ.', async () => {
-
-                await bs.blotterSendBtn.click()
-                await sendPanel.bankBtn.click()
-                await sendPanel.SendBtn.click()
-
-            })
-            await test.step('WHEN sellside acknowledges the RFQ.', async () => {
-                await ss.ackButton.click()
-
-            })
-            await test.step('THEN buyside can see the status ACKNOWLEDGED for the RFQ.', async () => {
-                await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
-            })
-        })
+    })
 })
