@@ -1,13 +1,12 @@
 import { test, expect, Page, BrowserContext } from "@playwright/test";
-import SignIn from "../Components/Shared/signin";
-import BuysidePage from "../Components/Buyside/bsPage";
+import BuysideUser from "../Users/buysideUser";
+import SellsideUser from "../Users/sellsideUser";
 import auth from "../Data/signInDetails.json"
-import SendPanel from "../Components/Buyside/sendPanel";
 import rfqState from "../Data/rfqStates.json"
-import SellsidePage from "../Components/Sellside/ssPage";
+import sc from "../Data/shortcodes.json"
 
 
-test.describe.serial('Inflation test suite', () => {
+test.describe('Inflation test suite', () => {
 
     //Use soft assertions.
     const sExpect = expect.configure({ soft: true });
@@ -15,43 +14,34 @@ test.describe.serial('Inflation test suite', () => {
     //Buyside browser context and pages.
     let bsContext: BrowserContext
     let bsPage: Page
-    let bsSignInPage: SignIn
-    let bs: BuysidePage
+    let bs: BuysideUser
 
     //Sellside browser context and pages.
     let ssContext: BrowserContext
     let ssPage: Page
-    let ssSignInPage: SignIn
-    let ss: SellsidePage
+    let ss: SellsideUser
 
     test.beforeAll(async ({ browser }) => {
 
         //Instantiate buyside browser-context, context-page and page-objects.
         bsContext = await browser.newContext()
         bsPage = await bsContext.newPage()
-        bsSignInPage = new SignIn(bsPage)
-        bs = new BuysidePage(bsPage)
+        bs = new BuysideUser(bsPage)
 
         //Instantiate sellside browser-context, context-page and page-objects.
         ssContext = await browser.newContext()
         ssPage = await ssContext.newPage()
-        ssSignInPage = new SignIn(ssPage)
-        ss = new SellsidePage(ssPage)
+        ss = new SellsideUser(ssPage)
 
         //Sign in to bid.
-        await bsSignInPage.signIn(bsPage, auth.INF.bs.username, auth.INF.bs.password)
-        await bsPage.goto('/api/bid/archiveallthethingsquickly')
-        await bsPage.goto('/')
-        await ssSignInPage.signIn(ssPage, auth.INF.ss1.username, auth.INF.ss1.password)
-    })
-
-    test.afterEach(async () => {
-        await bsPage.goto('/api/bid/archiveallthethingsquickly')
+        await bs.signIn(bsPage, auth.INF.bs.username, auth.INF.bs.password)
+        await ss.signIn(ssPage, auth.INF.ss1.username, auth.INF.ss1.password)
     })
 
     test.beforeEach(async () => {
-        await bsPage.goto('/')
+        await bsPage.goto('/api/bid/archiveallthethingsquickly')
         await ssPage.goto('/')
+        await bsPage.goto('/')
     })
 
     test.afterAll(async () => {
@@ -61,15 +51,15 @@ test.describe.serial('Inflation test suite', () => {
 
     test(`FIRST send INF shortcode and verify rfq status after ss acknowledges`, async () => {
 
-        await bs.sendShortCode('p eur 5y not 44mm')
-        await ss.ackButton.click()
+        await bs.sendsShortCode(sc.outright.EUR)
+        await ss.acknowledges()
         await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
 
     })
 
     test(`SECOND send INF shortcode and verify rfq status after ss acknowledges`, async () => {
 
-        await bs.sendShortCode('p eur 5y not 44mm')
+        await bs.sendsShortCode('p eur 5y not 44mm')
         await ss.ackButton.click()
         await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
 
@@ -77,7 +67,7 @@ test.describe.serial('Inflation test suite', () => {
 
     test(`THIRD send INF shortcode and verify rfq status after ss acknowledges`, async () => {
 
-        await bs.sendShortCode('p eur 5y not 44mm')
+        await bs.sendsShortCode('p eur 5y not 44mm')
         await ss.ackButton.click()
         await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
 

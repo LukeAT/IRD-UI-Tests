@@ -1,9 +1,9 @@
 import { test, expect, Page, BrowserContext } from "@playwright/test";
-import SignIn from "../Components/Shared/signin";
-import BuysidePage from "../Components/Buyside/bsPage";
+import SignIn from "../Users/Shared/signin";
+import BuysidePage from "../Users/Buyside/bsPage";
 import auth from "../Data/signInDetails.json"
 import rfqState from "../Data/rfqStates.json"
-import SellsidePage from "../Components/Sellside/ssPage";
+import SellsidePage from "../Users/Sellside/ssPage";
 
 
 test.describe.serial('outright test suite', () => {

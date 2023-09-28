@@ -1,7 +1,7 @@
 import { Locator, Page } from "@playwright/test";
-import BasePage from "../Shared/basePage";
+import BasePage from "./baseUser";
 
-export default class BuysidePage extends BasePage {
+export default class BuysideUser extends BasePage {
 
     readonly page: Page
     readonly goButton: Locator
@@ -27,12 +27,7 @@ export default class BuysidePage extends BasePage {
 
     }
 
-    async loadShortcode(shortcode: string) {
-        await this.shortCodeInput.fill(shortcode)
-        await this.goButton.click()
-    }
-
-    async sendShortCode(shortcode: string) {
+    async sendsShortCode(shortcode: string) {
 
         let errorVisible = false
 

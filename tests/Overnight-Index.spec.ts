@@ -1,12 +1,12 @@
 import { test, expect, Page, BrowserContext } from "@playwright/test";
-import SignIn from "../Components/Shared/signin";
-import BuysidePage from "../Components/Buyside/bsPage";
+import SignIn from "../Users/Shared/signin";
+import BuysidePage from "../Users/Buyside/bsPage";
 import auth from "../Data/signInDetails.json"
 import rfqState from "../Data/rfqStates.json"
-import SellsidePage from "../Components/Sellside/ssPage";
+import SellsidePage from "../Users/Sellside/ssPage";
 
 
-test.describe.serial('overnight-index test suite', () => {
+test.describe('overnight-index test suite', () => {
 
     //Use soft assertions.
     const sExpect = expect.configure({ soft: true });
@@ -54,8 +54,8 @@ test.describe.serial('overnight-index test suite', () => {
     })
 
     test.afterAll(async () => {
-        //await bsContext.close()
-        //await ssContext.close()
+        await bsContext.close()
+        await ssContext.close()
     })
 
     test(`FIRST send OIS shortcode and verify rfq status after ss acknowledges`, async () => {
@@ -74,7 +74,7 @@ test.describe.serial('overnight-index test suite', () => {
 
     })
 
-    test(`THIRD send OIS shortcode and verify rfq status after ss acknowledges`, async () => {
+    test(`THIRD send OIS shortcode and verify rfq status after ss acknowledges`, async () => { 
 
         await bs.sendShortCode('p eur 5y not 44mm')
         await ss.ackButton.click()

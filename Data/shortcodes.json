@@ -1,4 +1,8 @@
 {
+    "outright":{
+        "EUR": "p eur 5y not 44mm"
+
+    },
     "basis": {
         "close": "p sek 6y 3m 6m not 100mm close 1.2",
         "closeRec": "r sek 6y 3m 6m not 100mm close 1.3"

@@ -1,7 +1,7 @@
 import { Locator, Page } from "@playwright/test";
-import BasePage from "../Shared/basePage";
+import BasePage from "./baseUser";
 
-export default class SellsidePage extends BasePage {
+export default class SellsideUser extends BasePage {
 
     readonly page: Page
     readonly ackButton: Locator
@@ -11,5 +11,9 @@ export default class SellsidePage extends BasePage {
         super(page)
         this.page = page
         this.ackButton = page.getByRole("button").filter({ hasText: "Acknowledge" })    
+    }
+
+    async acknowledges () {
+        this.ackButton.click()
     }
 }
