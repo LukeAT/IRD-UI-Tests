@@ -4,9 +4,10 @@ import SellsideUser from "../Users/sellsideUser";
 import auth from "../Data/signInDetails.json"
 import rfqState from "../Data/rfqStates.json"
 import sc from "../Data/shortcodes.json"
-import { oneSS } from "../Fixtures/singleSellSideSetup";
+import setup from "../Helper/setup"
 
-oneSS.describe('Inflation test suite', () => {
+
+test.describe('Inflation test suite', () => {
 
     const softExpect = expect.configure({ soft: true });
     test.describe.configure({ retries: 3 });
@@ -22,6 +23,10 @@ oneSS.describe('Inflation test suite', () => {
     let ss: SellsideUser
 
     test.beforeAll(async ({ browser }) => {
+
+
+
+        bs = new BuysideUser(setup.setup())
 
         //Instantiate buyside browser-context, context-page and page-objects.
         bsContext = await browser.newContext()

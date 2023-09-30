@@ -4,6 +4,8 @@ export default class BaseUser {
 
     readonly page: Page
 
+    
+
     // Sign-in.
     readonly signInEmail: Locator
     readonly signInPwd: Locator
