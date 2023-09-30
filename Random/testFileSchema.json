@@ -14,7 +14,8 @@
             "Multiple sellsides",
             "Reject details",
             "Off Quote",
-            "Dealt Away"
+            "Dealt Away",
+            "Oneway vs Two way"
         ]
     },
     "The main purpose of the standard workflow is to verify values such as ...": {

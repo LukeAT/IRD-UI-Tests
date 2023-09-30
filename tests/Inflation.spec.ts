@@ -4,12 +4,12 @@ import SellsideUser from "../Users/sellsideUser";
 import auth from "../Data/signInDetails.json"
 import rfqState from "../Data/rfqStates.json"
 import sc from "../Data/shortcodes.json"
+import { oneSS } from "../Fixtures/singleSellSideSetup";
 
+oneSS.describe('Inflation test suite', () => {
 
-test.describe('Inflation test suite', () => {
-
-    //Use soft assertions.
-    const sExpect = expect.configure({ soft: true });
+    const softExpect = expect.configure({ soft: true });
+    test.describe.configure({ retries: 3 });
 
     //Buyside browser context and pages.
     let bsContext: BrowserContext
@@ -52,24 +52,24 @@ test.describe('Inflation test suite', () => {
     test(`FIRST send INF shortcode and verify rfq status after ss acknowledges`, async () => {
 
         await bs.sendsShortCode(sc.outright.EUR)
-        await ss.acknowledges()
-        await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
+        await ss.ackBtn.click()
+        await softExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
 
     })
 
     test(`SECOND send INF shortcode and verify rfq status after ss acknowledges`, async () => {
 
         await bs.sendsShortCode('p eur 5y not 44mm')
-        await ss.ackButton.click()
-        await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
+        await ss.ackBtn.click()
+        await softExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
 
     })
 
     test(`THIRD send INF shortcode and verify rfq status after ss acknowledges`, async () => {
 
         await bs.sendsShortCode('p eur 5y not 44mm')
-        await ss.ackButton.click()
-        await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
+        await ss.ackBtn.click()
+        await softExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
 
     })
 })

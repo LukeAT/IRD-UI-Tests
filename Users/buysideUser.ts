@@ -4,16 +4,22 @@ import BasePage from "./baseUser";
 export default class BuysideUser extends BasePage {
 
     readonly page: Page
-    readonly goButton: Locator
-    readonly blotterSendBtn: Locator
+
+    // Send shortcodes.
     readonly shortCodeInput: Locator
+    readonly goButton: Locator
+
+    // Blotter action.
+    readonly blotterSendBtn: Locator
+
+    // Send panel.
     readonly bankBtn: Locator;
     readonly SendBtn: Locator;
     readonly errormsg: Locator;
-    readonly cancelButton: Locator;
 
 
     constructor(page: Page) {
+
         super(page)
         this.page = page
         this.shortCodeInput = page.locator('//input[@id="shortCodeEntry"]')
@@ -23,8 +29,7 @@ export default class BuysideUser extends BasePage {
         this.SendBtn = page.locator("//button[@id='submitButton']")
         this.errormsg = page.getByText('An error occurred.')
         this.SendBtn = page.locator("//button[@id='submitButton']")
-        this.cancelButton = page.locator("//button[@id='cancelButton']")
-
+        
     }
 
     async sendsShortCode(shortcode: string) {

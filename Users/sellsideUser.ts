@@ -4,16 +4,13 @@ import BasePage from "./baseUser";
 export default class SellsideUser extends BasePage {
 
     readonly page: Page
-    readonly ackButton: Locator
+    readonly ackBtn: Locator
 
     constructor(page: Page) {
        
         super(page)
         this.page = page
-        this.ackButton = page.getByRole("button").filter({ hasText: "Acknowledge" })    
+        this.ackBtn = page.getByRole("button").filter({ hasText: "Acknowledge" })    
     }
 
-    async acknowledges () {
-        this.ackButton.click()
-    }
 }
