@@ -1,16 +1,12 @@
 {
-    "outright":{
+    "outright": {
         "EUR": "p eur 5y not 44mm"
-
+    },
+    "inf": {
+        "EUR": "P EUR 1y5y not 50mm INF"
     },
     "basis": {
-        "close": "p sek 6y 3m 6m not 100mm close 1.2",
+        //"close": "p sek 6y 3m 6m not 100mm close 1.2",
         "closeRec": "r sek 6y 3m 6m not 100mm close 1.3"
     }
-
-
-
-
-
-
 }

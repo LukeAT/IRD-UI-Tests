@@ -5,31 +5,41 @@ export default class BuysideUser extends BasePage {
 
     readonly page: Page
 
-    // Send shortcodes.
+    // Load shortcode.
     readonly shortCodeInput: Locator
     readonly goButton: Locator
 
-    // Blotter action.
+    // Send RFQ.
     readonly blotterSendBtn: Locator
-
-    // Send panel.
     readonly bankBtn: Locator;
     readonly SendBtn: Locator;
     readonly errormsg: Locator;
+   
+
+    // Quoting panel.
+    readonly qPanelBestBid: Locator;
+    readonly qPanelBestOffer: Locator;
 
 
     constructor(page: Page) {
 
         super(page)
         this.page = page
+
+        // Load shortcode.
         this.shortCodeInput = page.locator('//input[@id="shortCodeEntry"]')
         this.goButton = page.locator('//*[@id="goFlyMyPretties"]')
+
+        // Send RFQ.
         this.blotterSendBtn = page.getByRole("button").filter({ hasText: "Send" })
         this.bankBtn = page.getByRole("button").filter({ hasText: 'MWMEGA' })
         this.SendBtn = page.locator("//button[@id='submitButton']")
         this.errormsg = page.getByText('An error occurred.')
-        this.SendBtn = page.locator("//button[@id='submitButton']")
-        
+
+        // Quoting panel
+        this.qPanelBestBid = page.locator("//button[@id='btnAwardBid']")
+        this.qPanelBestOffer = page.locator("//button[@id='btnAwardOffer']")
+
     }
 
     async sendsShortCode(shortcode: string) {
@@ -56,4 +66,18 @@ export default class BuysideUser extends BasePage {
             } 
         }
     }
+
+    async awardsBest(offerOrBid: string){
+        if(offerOrBid === "bid") {
+            this.qPanelBestBid.click()
+        } else if (offerOrBid === "offer") {
+            this.qPanelBestOffer.click()
+        } else {
+            console.log("unrecognised award value")
+        }
+    }
+
+
+
+
 }

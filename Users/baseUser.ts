@@ -43,4 +43,6 @@ export default class BaseUser {
         await this.remindMePopUp.click()
 
     }
+
+    
 }

@@ -4,12 +4,13 @@ import SellsideUser from "../Users/sellsideUser";
 import auth from "../Data/signInDetails.json"
 import rfqState from "../Data/rfqStates.json"
 import sc from "../Data/shortcodes.json"
+import swap from "../Data/instrument.json"
 
 
 test.describe('Inflation test suite', () => {
 
-    const softExpect = expect.configure({ soft: true });
-    test.describe.configure({ retries: 3 });
+    // Use soft assertions.
+    const Expect = expect.configure({ soft: true });
 
     // bs and ss context and page and user.
     let bsContext: BrowserContext
@@ -32,11 +33,6 @@ test.describe('Inflation test suite', () => {
         //Sign in to bid.
         await bs.signIn(bsPage, auth.INF.bs.username, auth.INF.bs.password)
         await ss.signIn(ssPage, auth.INF.ss1.username, auth.INF.ss1.password)
-
-    })
-
-    test.afterEach(async () => {
-
         await bsPage.goto('/api/bid/archiveallthethingsquickly')
 
     })
@@ -45,6 +41,12 @@ test.describe('Inflation test suite', () => {
 
         await ssPage.goto('/')
         await bsPage.goto('/')
+
+    })
+
+    test.afterEach(async () => {
+
+        await bsPage.goto('/api/bid/archiveallthethingsquickly')
 
     })
 
@@ -57,25 +59,34 @@ test.describe('Inflation test suite', () => {
 
     test(`FIRST send INF shortcode and verify rfq status after ss acknowledges`, async () => {
 
-        await bs.sendsShortCode(sc.outright.EUR)
-        await ss.ackBtn.click()
-        await softExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
+        await bs.sendsShortCode(sc.inf.EUR)
+        await ss.acknowledges()
+        await ss.quotes(swap.inf)
+        await bs.awardsBest("offer")
+
+        await Expect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
 
     })
 
-    test(`SECOND send INF shortcode and verify rfq status after ss acknowledges`, async () => {
 
-        await bs.sendsShortCode('p eur 5y not 44mm')
-        await ss.ackBtn.click()
-        await softExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
+    const shortcodes = [
+        sc.inf.EUR,
+        sc.outright.EUR,
+        sc.basis.closeRec
+    ]
 
-    })
+    for (let i = 0; i < shortcodes.length; i++) {
 
-    test(`THIRD send INF shortcode and verify rfq status after ss acknowledges`, async () => {
+        test(`Send shortcodes and verify rfq status after ss acknowledges ${i}`, async () => {
 
-        await bs.sendsShortCode('p eur 5y not 44mm')
-        await ss.ackBtn.click()
-        await softExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
+            await bs.sendsShortCode(shortcodes[i])
+            await ss.acknowledges()
+            await ss.quotes(swap.inf)
+            await bs.awardsBest("offer")
 
-    })
+            await Expect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
+        }
+    }
+
+
 })
