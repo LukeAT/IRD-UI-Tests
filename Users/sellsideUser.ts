@@ -1,6 +1,6 @@
 import { Locator, Page } from "@playwright/test";
 import BasePage from "./baseUser";
-import swap from "../Data/instrument.json"
+import swap from "../Data/swapTypes.json"
 
 export default class SellsideUser extends BasePage {
 

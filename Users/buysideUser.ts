@@ -1,5 +1,7 @@
 import { Locator, Page } from "@playwright/test";
 import BasePage from "./baseUser";
+import path from 'path';
+
 
 export default class BuysideUser extends BasePage {
 
@@ -7,18 +9,21 @@ export default class BuysideUser extends BasePage {
 
     // Load shortcode.
     private readonly shortCodeInput: Locator
-    private readonly goButton: Locator
+    private readonly goBtn: Locator
 
+    // Staging.
+    private readonly goToStagingBtn: Locator
+    private readonly selectAllBtn: Locator
+    
     // Send RFQ.
     private readonly blotterSendBtn: Locator
-    private readonly bankBtn: Locator;
-    private readonly SendBtn: Locator;
-    private readonly errormsg: Locator;
-   
+    private readonly bankBtn: Locator
+    private readonly SendBtn: Locator
+    private readonly errormsg: Locator
 
     // Quoting panel.
-    private readonly qPanelBestBid: Locator;
-    private readonly qPanelBestOffer: Locator;
+    private readonly qPanelBestBid: Locator
+    private readonly qPanelBestOffer: Locator
 
 
     constructor(page: Page) {
@@ -28,8 +33,12 @@ export default class BuysideUser extends BasePage {
 
         // Load shortcode.
         this.shortCodeInput = page.locator('//input[@id="shortCodeEntry"]')
-        this.goButton = page.locator('//*[@id="goFlyMyPretties"]')
+        this.goBtn = page.locator('//*[@id="goFlyMyPretties"]')
 
+        // Go to Staging.
+        this.goToStagingBtn = page.locator('#gotoimportid')
+        this.selectAllBtn = page.locator('#btnSelectAll')
+       
         // Send RFQ.
         this.blotterSendBtn = page.getByRole("button").filter({ hasText: "Send" })
         this.bankBtn = page.getByRole("button").filter({ hasText: 'MWMEGA' })
@@ -42,17 +51,41 @@ export default class BuysideUser extends BasePage {
 
     }
 
-    async sendsShortCode(shortcode: string) {
- 
-        let errorVisible = false
+    async uploadsRfq(fileName: string) {
+
+        const filePath = path.join(__dirname, '../Data/RFQs/' + fileName)
+        await this.page.setInputFiles('#irsselectfiletoimport', filePath)
+
+    }
+
+    async importsRfqAs(importType: string){
+
+        // Put archive staging here
+
+        const stagingImportTypeBtn = this.page.getByRole("button").filter({ hasText: importType })
+
+        this.goToStagingBtn.click()
+        this.selectAllBtn.click()
+        stagingImportTypeBtn.click()
+
+    }
+
+    async loadsShortCode(shortcode: string) {
 
         await this.shortCodeInput.fill(shortcode)
-        await this.goButton.click()
+        await this.goBtn.click()
+        
+    }
+
+    async sendsRFQ() {
+
+        let errorVisible = false
+
         await this.blotterSendBtn.click()
         await this.bankBtn.click()
         await this.SendBtn.click()
 
-        await this.errormsg.waitFor({state:"visible", timeout: 3000}).catch(console.log)
+        await this.errormsg.waitFor({ state: "visible", timeout: 3000 }).catch(console.log)
 
         if (await this.errormsg.isVisible()) {
             errorVisible = true
@@ -60,15 +93,15 @@ export default class BuysideUser extends BasePage {
 
         while (errorVisible === true) {
             await this.SendBtn.click()
-            await this.errormsg.waitFor({state:"visible", timeout: 3000}).catch(console.log)
+            await this.errormsg.waitFor({ state: "visible", timeout: 3000 }).catch(console.log)
             if (!await this.errormsg.isVisible()) {
                 errorVisible = false
-            } 
+            }
         }
     }
 
-    async awardsBest(offerOrBid: string){
-        if(offerOrBid === "bid") {
+    async awardsBest(offerOrBid: string) {
+        if (offerOrBid === "bid") {
             await this.qPanelBestBid.click()
         } else if (offerOrBid === "offer") {
             await this.qPanelBestOffer.click()

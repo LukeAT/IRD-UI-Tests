@@ -4,7 +4,8 @@ import SellsideUser from "../Users/sellsideUser";
 import auth from "../Data/signInDetails.json"
 import rfqState from "../Data/rfqStates.json"
 import sc from "../Data/shortcodes.json"
-import swap from "../Data/instrument.json"
+import swapType from "../Data/swapTypes.json"
+import impType from "../Data/importTypes.json"
 
 
 test.describe('Inflation test suite', () => {
@@ -59,9 +60,24 @@ test.describe('Inflation test suite', () => {
 
     test(`FIRST send INF shortcode and verify rfq status after ss acknowledges`, async () => {
 
-        await bs.sendsShortCode(sc.INF.EUR)
+        await bs.loadsShortCode(sc.INF.EUR)
+        await bs.sendsRFQ()
         await ss.acknowledges()
-        await ss.quotes(swap.inf)
+        await ss.quotes(swapType.inf)
+        await bs.awardsBest("offer")
+        await ss.clicksDone()
+
+        await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
+
+    })
+
+    test(`upload outright TSV and verify rfq status after ss acknowledges`, async () => {
+
+        await bs.uploadsRfq('outright.tsv')
+        await bs.importsRfqAs(impType.rfqOnRate)
+        await bs.sendsRFQ()
+        await ss.acknowledges()
+        await ss.quotes(swapType.out)
         await bs.awardsBest("offer")
         await ss.clicksDone()
 
@@ -77,13 +93,14 @@ test.describe('Inflation test suite', () => {
     for (let i = 0; i < shortcodes.length; i++) {
         test(`Send shortcodes and verify rfq status after ss acknowledges ${i}`, async () => {
 
-            await bs.sendsShortCode(shortcodes[i])
-            await ss.acknowledges()
-            await ss.quotes(swap.inf)
-            await bs.awardsBest("offer")
-            await ss.clicksDone()
+        await bs.loadsShortCode(shortcodes[i])
+        await bs.sendsRFQ()
+        await ss.acknowledges()
+        await ss.quotes(swapType.inf)
+        await bs.awardsBest("offer")
+        await ss.clicksDone()
 
-            await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
+        await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
         })
     }
 })

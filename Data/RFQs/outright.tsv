@@ -1,0 +1,2 @@
+Package ID	Swap Type	Currency	Start Date	Tenor / Maturity	Nominal	Direction - Leg 1	Direction - Leg 2	Kind - Leg 1	Kind - Leg 2	Position
+IRS outright	IRS	GBP	0y	5y	" 100,000,000 "	Pay	Receive	Fixed	Floating	Open
