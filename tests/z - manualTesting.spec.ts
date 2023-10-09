@@ -59,7 +59,7 @@ test.describe('Inflation test suite', () => {
 
     test(`FIRST send INF shortcode and verify rfq status after ss acknowledges`, async () => {
 
-        await bs.sendsShortCode(sc.inf.EUR)
+        await bs.sendsShortCode(sc.INF.EUR)
         await ss.acknowledges()
         await ss.quotes(swap.inf)
         await bs.awardsBest("offer")
@@ -70,8 +70,8 @@ test.describe('Inflation test suite', () => {
     })
 
     const shortcodes = [
-        sc.inf.EUR,
-        sc.outright.EUR,
+        sc.INF.EUR,
+        sc.OUT.EUR
     ]
 
     for (let i = 0; i < shortcodes.length; i++) {
@@ -86,5 +86,4 @@ test.describe('Inflation test suite', () => {
             await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
         })
     }
-
 })

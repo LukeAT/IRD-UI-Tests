@@ -6,19 +6,19 @@ export default class BuysideUser extends BasePage {
     readonly page: Page
 
     // Load shortcode.
-    readonly shortCodeInput: Locator
-    readonly goButton: Locator
+    private readonly shortCodeInput: Locator
+    private readonly goButton: Locator
 
     // Send RFQ.
-    readonly blotterSendBtn: Locator
-    readonly bankBtn: Locator;
-    readonly SendBtn: Locator;
-    readonly errormsg: Locator;
+    private readonly blotterSendBtn: Locator
+    private readonly bankBtn: Locator;
+    private readonly SendBtn: Locator;
+    private readonly errormsg: Locator;
    
 
     // Quoting panel.
-    readonly qPanelBestBid: Locator;
-    readonly qPanelBestOffer: Locator;
+    private readonly qPanelBestBid: Locator;
+    private readonly qPanelBestOffer: Locator;
 
 
     constructor(page: Page) {
@@ -43,7 +43,7 @@ export default class BuysideUser extends BasePage {
     }
 
     async sendsShortCode(shortcode: string) {
-
+ 
         let errorVisible = false
 
         await this.shortCodeInput.fill(shortcode)
@@ -69,9 +69,9 @@ export default class BuysideUser extends BasePage {
 
     async awardsBest(offerOrBid: string){
         if(offerOrBid === "bid") {
-            this.qPanelBestBid.click()
+            await this.qPanelBestBid.click()
         } else if (offerOrBid === "offer") {
-            this.qPanelBestOffer.click()
+            await this.qPanelBestOffer.click()
         } else {
             console.log("unrecognised award value")
         }

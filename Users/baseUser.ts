@@ -4,14 +4,12 @@ export default class BaseUser {
 
     readonly page: Page
 
-    
-
     // Sign-in.
-    readonly signInEmail: Locator
-    readonly signInPwd: Locator
-    readonly logInBtn: Locator
-    readonly enablePopUp: Locator
-    readonly remindMePopUp: Locator
+    private readonly signInPwd: Locator
+    private readonly signInEmail: Locator
+    private readonly logInBtn: Locator
+    private readonly enablePopUp: Locator
+    private readonly remindMePopUp: Locator
 
     readonly blotterStatus: Locator
 

@@ -5,14 +5,15 @@ import swap from "../Data/instrument.json"
 export default class SellsideUser extends BasePage {
 
     readonly page: Page
-    readonly ackBtn: Locator
+    private readonly ackBtn: Locator
 
     // Quoting panel.
-    readonly qPanelBid: Locator;
-    readonly qPanelOffer: Locator;
-    readonly qPanelQuote: Locator;
-    readonly qPanelTrader: Locator;
-    readonly qPanelTraderOption: Locator;
+    private readonly qPanelBid: Locator;
+    private readonly qPanelOffer: Locator;
+    private readonly qPanelQuote: Locator;
+    private readonly qPanelTrader: Locator;
+    private readonly qPanelTraderOption1: Locator;
+    private readonly qPanelDone: Locator;
 
 
 
@@ -21,38 +22,44 @@ export default class SellsideUser extends BasePage {
         super(page)
         this.page = page
         this.ackBtn = page.getByRole("button").filter({ hasText: "Acknowledge" })
-        this.qPanelBid = page.locator("//*[@id='inputBidQuote']")
-        this.qPanelOffer = page.locator("//*[@id='inputOfferQuote']")
-        this.qPanelQuote = page.locator("//*[@id='btnQuoteActionIrs']")
-        this.qPanelTrader = page.locator("//*[@id='traderDropdown']")
-        this.qPanelTraderOption = page.getByText("@otcxbiz")
-
-
+        this.qPanelBid = page.locator("#inputBidQuote")
+        this.qPanelOffer = page.locator("#inputOfferQuote")
+        this.qPanelQuote = page.locator("#btnQuoteActionIrs")
+        this.qPanelTrader = page.locator("#traderDropdown")
+        this.qPanelTraderOption1 = page.locator("#traders > option:nth-child(1)")
+        this.qPanelDone = page.locator("#btnDoneAction")
 
     }
 
     async acknowledges() {
-        this.ackBtn.click()
+        await this.ackBtn.click()
     }
 
-    async quotes(swapKind: string, bid: string = "1.1", offer: string = "1.2") {
+    async clicksDone() {
+        await this.qPanelDone.click()
+    }
 
 
+    async quotes(swapKind: string, bid: string = '1.1', offer: string = '1.2') {
+
+        let firstTraderName: string | null
+        
         switch (swapKind) {
             case swap.out:
             case swap.inf:
             case swap.ios:
-                this.qPanelBid.fill(bid)
-                this.qPanelOffer.fill(offer)
-                this.qPanelTrader.fill("a")
-                this.qPanelTraderOption.first().click()
-
+                await this.qPanelBid.fill(bid)
+                await this.qPanelOffer.fill(offer)
+                firstTraderName = await this.qPanelTraderOption1.getAttribute("value")
+                if(firstTraderName != null){
+                    this.qPanelTrader.fill(firstTraderName)
+                }
+                            
                 break;
 
             default:
                 break;
         }
-
 
         this.qPanelQuote.click()
 
