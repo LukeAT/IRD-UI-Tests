@@ -52,7 +52,7 @@ export default class SellsideUser extends BasePage {
                 await this.qPanelOffer.fill(offer)
                 firstTraderName = await this.qPanelTraderOption1.getAttribute("value")
                 if(firstTraderName != null){
-                    this.qPanelTrader.fill(firstTraderName)
+                    await this.qPanelTrader.fill(firstTraderName)
                 }
                             
                 break;
@@ -61,7 +61,7 @@ export default class SellsideUser extends BasePage {
                 break;
         }
 
-        this.qPanelQuote.click()
+        await this.qPanelQuote.click()
 
     }
 }

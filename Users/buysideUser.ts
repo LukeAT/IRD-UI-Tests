@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator, Page, request } from "@playwright/test";
 import BasePage from "./baseUser";
 import path from 'path';
 
@@ -14,7 +14,7 @@ export default class BuysideUser extends BasePage {
     // Staging.
     private readonly goToStagingBtn: Locator
     private readonly selectAllBtn: Locator
-    
+
     // Send RFQ.
     private readonly blotterSendBtn: Locator
     private readonly bankBtn: Locator
@@ -38,7 +38,7 @@ export default class BuysideUser extends BasePage {
         // Go to Staging.
         this.goToStagingBtn = page.locator('#gotoimportid')
         this.selectAllBtn = page.locator('#btnSelectAll')
-       
+
         // Send RFQ.
         this.blotterSendBtn = page.getByRole("button").filter({ hasText: "Send" })
         this.bankBtn = page.getByRole("button").filter({ hasText: 'MWMEGA' })
@@ -53,20 +53,23 @@ export default class BuysideUser extends BasePage {
 
     async uploadsRfq(fileName: string) {
 
+        const response = await this.page.evaluate(() => {
+            return fetch('https://uat3.otcxtrading.com/api/import/ArchiveStagedEntries'); // Replace with your desired URL
+        });
+        console.log('Status Code:', response.statusText);
+
         const filePath = path.join(__dirname, '../Data/RFQs/' + fileName)
         await this.page.setInputFiles('#irsselectfiletoimport', filePath)
 
     }
 
-    async importsRfqAs(importType: string){
-
-        this.page.goto('/api/import/ArchiveStagedEntries')
+    async importsRfqAs(importType: string) {
 
         const stagingImportTypeBtn = this.page.getByRole("button").filter({ hasText: importType })
 
-        this.goToStagingBtn.click()
-        this.selectAllBtn.click()
-        stagingImportTypeBtn.click()
+        await this.goToStagingBtn.click()
+        await this.selectAllBtn.click()
+        await stagingImportTypeBtn.click()
 
     }
 
@@ -74,7 +77,7 @@ export default class BuysideUser extends BasePage {
 
         await this.shortCodeInput.fill(shortcode)
         await this.goBtn.click()
-        
+
     }
 
     async sendsRFQ() {

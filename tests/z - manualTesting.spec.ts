@@ -58,7 +58,7 @@ test.describe('Inflation test suite', () => {
 
     })
 
-    test(`FIRST send INF shortcode and verify rfq status after ss acknowledges`, async () => {
+    test('Send INF shortcode and verify rfq status after ss acknowledges', async () => {
 
         await bs.loadsShortCode(sc.INF.EUR)
         await bs.sendsRFQ()
