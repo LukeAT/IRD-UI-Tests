@@ -4,8 +4,8 @@ import SellsideUser from "../Users/sellsideUser";
 import auth from "../Data/signInDetails.json"
 import rfqState from "../Data/rfqStates.json"
 import sc from "../Data/shortcodes.json"
-import swapType from "../Data/swapTypes.json"
-import impType from "../Data/importTypes.json"
+import s from "../Data/swapTypes.json"
+import i from "../Data/importTypes.json"
 
 
 test.describe('Inflation test suite', () => {
@@ -63,7 +63,7 @@ test.describe('Inflation test suite', () => {
         await bs.loadsShortCode(sc.INF.EUR)
         await bs.sendsRFQ()
         await ss.acknowledges()
-        await ss.quotes(swapType.inf)
+        await ss.quotes(s.inf)
         await bs.awardsBest("offer")
         await ss.clicksDone()
 
@@ -74,10 +74,10 @@ test.describe('Inflation test suite', () => {
     test(`upload outright TSV and verify rfq status after ss acknowledges`, async () => {
 
         await bs.uploadsRfq('outright.tsv')
-        await bs.importsRfqAs(impType.rfqOnRate)
+        await bs.importsRfqAs(i.rfqOnRate)
         await bs.sendsRFQ()
         await ss.acknowledges()
-        await ss.quotes(swapType.out)
+        await ss.quotes(s.out)
         await bs.awardsBest("offer")
         await ss.clicksDone()
 
@@ -97,7 +97,7 @@ test.describe('Inflation test suite', () => {
         await bs.loadsShortCode(shortcodes[i])
         await bs.sendsRFQ()
         await ss.acknowledges()
-        await ss.quotes(swapType.inf)
+        await ss.quotes(s.inf)
         await bs.awardsBest("offer")
         await ss.clicksDone()
 

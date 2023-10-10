@@ -1,4 +1,4 @@
-import { Locator, Page, request } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
 import BasePage from "./baseUser";
 import path from 'path';
 
@@ -53,10 +53,9 @@ export default class BuysideUser extends BasePage {
 
     async uploadsRfq(fileName: string) {
 
-        const response = await this.page.evaluate(() => {
+        await this.page.evaluate(() => {
             return fetch('https://uat3.otcxtrading.com/api/import/ArchiveStagedEntries'); // Replace with your desired URL
         });
-        console.log('Status Code:', response.statusText);
 
         const filePath = path.join(__dirname, '../Data/RFQs/' + fileName)
         await this.page.setInputFiles('#irsselectfiletoimport', filePath)
@@ -104,13 +103,15 @@ export default class BuysideUser extends BasePage {
     }
 
     async awardsBest(offerOrBid: string) {
+
         if (offerOrBid === "bid") {
             await this.qPanelBestBid.click()
         } else if (offerOrBid === "offer") {
             await this.qPanelBestOffer.click()
         } else {
-            console.log("unrecognised award value")
+            console.log("parameter for awardsBest method must be 'offer' or 'bid'")
         }
+
     }
 
 

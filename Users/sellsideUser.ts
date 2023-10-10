@@ -1,6 +1,6 @@
 import { Locator, Page } from "@playwright/test";
 import BasePage from "./baseUser";
-import swap from "../Data/swapTypes.json"
+import s from "../Data/swapTypes.json"
 
 export default class SellsideUser extends BasePage {
 
@@ -45,9 +45,9 @@ export default class SellsideUser extends BasePage {
         let firstTraderName: string | null
         
         switch (swapKind) {
-            case swap.out:
-            case swap.inf:
-            case swap.ios:
+            case s.out:
+            case s.inf:
+            case s.ios:
                 await this.qPanelBid.fill(bid)
                 await this.qPanelOffer.fill(offer)
                 firstTraderName = await this.qPanelTraderOption1.getAttribute("value")
