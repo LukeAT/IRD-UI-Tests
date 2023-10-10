@@ -60,7 +60,7 @@ export default class BuysideUser extends BasePage {
 
     async importsRfqAs(importType: string){
 
-        // Put archive staging here
+        this.page.goto('/api/import/ArchiveStagedEntries')
 
         const stagingImportTypeBtn = this.page.getByRole("button").filter({ hasText: importType })
 

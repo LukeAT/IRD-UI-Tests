@@ -91,6 +91,7 @@ test.describe('Inflation test suite', () => {
     ]
 
     for (let i = 0; i < shortcodes.length; i++) {
+
         test(`Send shortcodes and verify rfq status after ss acknowledges ${i}`, async () => {
 
         await bs.loadsShortCode(shortcodes[i])
@@ -101,6 +102,7 @@ test.describe('Inflation test suite', () => {
         await ss.clicksDone()
 
         await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
+        
         })
     }
 })
