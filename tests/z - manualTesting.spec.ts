@@ -97,7 +97,7 @@ test.describe('Inflation test suite', () => {
         await bs.loadsShortCode(shortcodes[i])
         await bs.sendsRFQ()
         await ss.acknowledges()
-        await ss.quotes(s.inf, '1.1', '1.2')
+        await ss.quotes( {bid: '1.1', offer: '1.2'} )
         await bs.awardsBest("offer")
         await ss.clicksDone()
 
