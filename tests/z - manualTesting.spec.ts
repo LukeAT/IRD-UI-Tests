@@ -63,7 +63,7 @@ test.describe('Inflation test suite', () => {
         await bs.loadsShortCode(sc.INF.EUR)
         await bs.sendsRFQ()
         await ss.acknowledges()
-        await ss.quotes(s.inf)
+        await ss.quotes({ bid: '1.1', offer: '1.2' })
         await bs.awardsBest("offer")
         await ss.clicksDone()
 
@@ -77,7 +77,7 @@ test.describe('Inflation test suite', () => {
         await bs.importsRfqAs(i.rfqOnRate)
         await bs.sendsRFQ()
         await ss.acknowledges()
-        await ss.quotes(s.out)
+        await ss.quotes()
         await bs.awardsBest("offer")
         await ss.clicksDone()
 
@@ -97,7 +97,7 @@ test.describe('Inflation test suite', () => {
         await bs.loadsShortCode(shortcodes[i])
         await bs.sendsRFQ()
         await ss.acknowledges()
-        await ss.quotes(s.inf)
+        await ss.quotes(s.inf, '1.1', '1.2')
         await bs.awardsBest("offer")
         await ss.clicksDone()
 

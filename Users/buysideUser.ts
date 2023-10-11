@@ -102,14 +102,14 @@ export default class BuysideUser extends BasePage {
         }
     }
 
-    async awardsBest(offerOrBid: string) {
+    async awardsBest(quote: string) {
 
-        if (offerOrBid === "bid") {
+        if (quote === "bid") {
             await this.qPanelBestBid.click()
-        } else if (offerOrBid === "offer") {
+        } else if (quote === "offer") {
             await this.qPanelBestOffer.click()
         } else {
-            console.log("parameter for awardsBest method must be 'offer' or 'bid'")
+            console.log("Unrecognised quote value for awardsBest method.")
         }
 
     }
