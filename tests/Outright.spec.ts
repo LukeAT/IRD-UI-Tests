@@ -31,8 +31,8 @@ test.describe('Outright test suite', () => {
         ss = new SellsideUser(ssPage)
 
         //Sign in to bid.
-        await bs.signIn(bsPage, auth.INF.bs.username, auth.INF.bs.password)
-        await ss.signIn(ssPage, auth.INF.ss1.username, auth.INF.ss1.password)
+        await bs.signIn(bsPage, auth.outright.bs.username, auth.INF.bs.password)
+        await ss.signIn(ssPage, auth.outright.ss1.username, auth.INF.ss1.password)
         await bsPage.goto('/api/bid/archiveallthethingsquickly')
 
     })
