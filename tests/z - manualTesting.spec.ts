@@ -4,7 +4,6 @@ import SellsideUser from "../Users/sellsideUser";
 import auth from "../Data/signInDetails.json"
 import rfqState from "../Data/rfqStates.json"
 import sc from "../Data/shortcodes.json"
-import s from "../Data/swapTypes.json"
 import i from "../Data/importTypes.json"
 
 
@@ -67,7 +66,10 @@ test.describe('Inflation test suite', () => {
         await bs.awardsBest("offer")
         await ss.clicksDone()
 
-        await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
+        bs.clicksSummaryTab()
+        await Expect(bs.sumTabBankSide).toHaveText('Rec fixed')
+        await Expect(bs.sumTabWinningQuote).toHaveText('1.2%')
+        await Expect(bs.sumTabNotional.first()).toHaveText('50,000,000')
 
     })
 
@@ -106,3 +108,5 @@ test.describe('Inflation test suite', () => {
         })
     }
 })
+
+

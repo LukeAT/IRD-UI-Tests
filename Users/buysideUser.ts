@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 import BasePage from "./baseUser";
 import path from 'path';
 
@@ -27,9 +27,13 @@ export default class BuysideUser extends BasePage {
     // Quoting panel.
     private readonly qPanelBestBid: Locator
     private readonly qPanelBestOffer: Locator
-    
-    
-    
+
+    // Summary tab.
+    readonly sumTabWinningQuote: Locator
+    readonly sumTabBankSide: Locator
+    readonly sumTabNotional: Locator
+    readonly summaryTab: Locator
+
 
 
     constructor(page: Page) {
@@ -53,11 +57,16 @@ export default class BuysideUser extends BasePage {
         this.dxNotional = page.locator('#deltaExchangeInputField')
         this.atmForwardRate = page.locator('#forwardRefRateInputField')
         this.oneWay = page.getByLabel('One Way')
-        
 
         // Quoting panel
         this.qPanelBestBid = page.locator("//button[@id='btnAwardBid']")
         this.qPanelBestOffer = page.locator("//button[@id='btnAwardOffer']")
+
+        // Summary tab.
+        this.summaryTab = page.locator("#tabSummary")
+        this.sumTabWinningQuote = page.locator("#dealSummaryWinningQuote")
+        this.sumTabNotional = page.locator("#mainEconomicsNotional0")
+        this.sumTabBankSide = page.locator("#mainEconomicsBankSide0")
 
     }
 
@@ -89,21 +98,21 @@ export default class BuysideUser extends BasePage {
 
     }
 
-    async sendsRFQ(bank1: string = 'MWMEGA', bank2?: string, options?: { oneWay?: boolean, withDeltaX?: boolean, dxNot?: string, atmFr?: string }, ) {
+    async sendsRFQ(bank1: string = 'MWMEGA', bank2?: string, options?: { oneWay?: boolean, withDeltaX?: boolean, dxNot?: string, atmFr?: string },) {
 
         await this.blotterSendBtn.click()
 
         // Select banks, bank 1 is always selected.
         this.page.getByRole("button").filter({ hasText: bank1 }).click()
-        if(bank2 !== undefined){
+        if (bank2 !== undefined) {
             this.page.getByRole("button").filter({ hasText: bank2 }).click
         }
 
         // Apply options.
-        if(options?.oneWay === true){ this.oneWay.check()}
-        if(options?.withDeltaX === true){ this.withDeltaExchange.check()}
-        if(options?.dxNot !== undefined){this.dxNotional.fill(options.dxNot)}
-        if(options?.atmFr !== undefined){this.atmForwardRate.fill(options.atmFr)}
+        if (options?.oneWay === true) { this.oneWay.check() }
+        if (options?.withDeltaX === true) { this.withDeltaExchange.check() }
+        if (options?.dxNot !== undefined) { this.dxNotional.fill(options.dxNot) }
+        if (options?.atmFr !== undefined) { this.atmForwardRate.fill(options.atmFr) }
 
         await this.SendBtn.click()
 
@@ -137,6 +146,9 @@ export default class BuysideUser extends BasePage {
 
     }
 
+    async clicksSummaryTab() {
+        this.summaryTab.click()
+    }
 
 
 

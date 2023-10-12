@@ -24,7 +24,7 @@ export default class BaseUser {
         this.blotterStatus = page.locator("//div[@id='statusIdCell']").first()
 
     }
-
+    
 
     async signIn(page: Page, username: string, password: string) {
 
