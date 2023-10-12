@@ -1,9 +1,9 @@
 {
     "OUT": {
-        "EUR": "p eur 5y not 44mm"
+        "EUR": "p eur 5y not 50mm"
     },
     "INF": {
-        "EUR": "P EUR 1y5y not 50mm INF"
+        "EUR": "p eur 1y5y not 50mm INF"
     },
     "basis": {
         "close": "p sek 6y 3m 6m not 100mm close 1.2",

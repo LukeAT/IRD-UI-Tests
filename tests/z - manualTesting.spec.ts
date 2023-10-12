@@ -67,6 +67,7 @@ test.describe('Inflation test suite', () => {
         await ss.clicksDone()
 
         bs.clicksSummaryTab()
+        await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
         await Expect(bs.sumTabBankSide).toHaveText('Rec fixed')
         await Expect(bs.sumTabWinningQuote).toHaveText('1.2%')
         await Expect(bs.sumTabNotional.first()).toHaveText('50,000,000')
@@ -79,11 +80,15 @@ test.describe('Inflation test suite', () => {
         await bs.importsRfqAs(i.rfqOnRate)
         await bs.sendsRFQ()
         await ss.acknowledges()
-        await ss.quotes()
+        await ss.quotes({ bid: '1.1', offer: '1.2' })
         await bs.awardsBest("offer")
         await ss.clicksDone()
 
+        bs.clicksSummaryTab()
         await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
+        await Expect(bs.sumTabBankSide).toHaveText('Rec fixed')
+        await Expect(bs.sumTabWinningQuote).toHaveText('1.2%')
+        await Expect(bs.sumTabNotional.first()).toHaveText('100,000,000')
 
     })
 
@@ -103,7 +108,11 @@ test.describe('Inflation test suite', () => {
         await bs.awardsBest("offer")
         await ss.clicksDone()
 
+        bs.clicksSummaryTab()
         await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
+        await Expect(bs.sumTabBankSide).toHaveText('Rec fixed')
+        await Expect(bs.sumTabWinningQuote).toHaveText('1.2%')
+        await Expect(bs.sumTabNotional.first()).toHaveText('50,000,000')
         
         })
     }
