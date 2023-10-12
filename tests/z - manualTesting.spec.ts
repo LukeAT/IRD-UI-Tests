@@ -73,7 +73,7 @@ test.describe('Inflation test suite', () => {
 
     test(`upload outright TSV and verify rfq status after ss acknowledges`, async () => {
 
-        await bs.uploadsRfq('outright.tsv')
+        await bs.uploads('outright.tsv')
         await bs.importsRfqAs(i.rfqOnRate)
         await bs.sendsRFQ()
         await ss.acknowledges()
@@ -97,7 +97,7 @@ test.describe('Inflation test suite', () => {
         await bs.loadsShortCode(shortcodes[i])
         await bs.sendsRFQ()
         await ss.acknowledges()
-        await ss.quotes( {bid: '1.1', offer: '1.2'} )
+        await ss.quotes({ bid: '1.1', offer: '1.2' })
         await bs.awardsBest("offer")
         await ss.clicksDone()
 

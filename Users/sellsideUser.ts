@@ -42,15 +42,9 @@ export default class SellsideUser extends BasePage {
 
 
         // Input quoting values.
-        if (options?.bid !== undefined) {
-            await this.qPanelBid.fill(options.bid)
-        }
-        if (options?.offer !== undefined) {
-            await this.qPanelOffer.fill(options.offer)
-        }
-        if (options?.allIn !== undefined) {
-            await this.qPanelAllIn.fill(options.allIn)
-        }
+        if (options?.bid !== undefined) {await this.qPanelBid.fill(options.bid)}
+        if (options?.offer !== undefined) {await this.qPanelOffer.fill(options.offer)}
+        if (options?.allIn !== undefined) {await this.qPanelAllIn.fill(options.allIn)}
 
 
         // Select Trader Name from dropdown.

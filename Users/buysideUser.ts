@@ -17,13 +17,19 @@ export default class BuysideUser extends BasePage {
 
     // Send RFQ.
     private readonly blotterSendBtn: Locator
-    private readonly bankBtn: Locator
     private readonly SendBtn: Locator
     private readonly errormsg: Locator
+    private readonly withDeltaExchange: Locator
+    private readonly dxNotional: Locator
+    private readonly atmForwardRate: Locator
+    private readonly oneWay: Locator
 
     // Quoting panel.
     private readonly qPanelBestBid: Locator
     private readonly qPanelBestOffer: Locator
+    
+    
+    
 
 
     constructor(page: Page) {
@@ -41,9 +47,13 @@ export default class BuysideUser extends BasePage {
 
         // Send RFQ.
         this.blotterSendBtn = page.getByRole("button").filter({ hasText: "Send" })
-        this.bankBtn = page.getByRole("button").filter({ hasText: 'MWMEGA' })
         this.SendBtn = page.locator("//button[@id='submitButton']")
         this.errormsg = page.getByText('An error occurred.')
+        this.withDeltaExchange = page.getByLabel('With Delta Exchange')
+        this.dxNotional = page.locator('#deltaExchangeInputField')
+        this.atmForwardRate = page.locator('#forwardRefRateInputField')
+        this.oneWay = page.getByLabel('One Way')
+        
 
         // Quoting panel
         this.qPanelBestBid = page.locator("//button[@id='btnAwardBid']")
@@ -51,7 +61,7 @@ export default class BuysideUser extends BasePage {
 
     }
 
-    async uploadsRfq(fileName: string) {
+    async uploads(fileName: string) {
 
         await this.page.evaluate(() => {
             return fetch('https://uat3.otcxtrading.com/api/import/ArchiveStagedEntries'); // Replace with your desired URL
@@ -79,13 +89,26 @@ export default class BuysideUser extends BasePage {
 
     }
 
-    async sendsRFQ() {
-
-        let errorVisible = false
+    async sendsRFQ(bank1: string = 'MWMEGA', bank2?: string, options?: { oneWay?: boolean, withDeltaX?: boolean, dxNot?: string, atmFr?: string }, ) {
 
         await this.blotterSendBtn.click()
-        await this.bankBtn.click()
+
+        // Select banks, bank 1 is always selected.
+        this.page.getByRole("button").filter({ hasText: bank1 }).click()
+        if(bank2 !== undefined){
+            this.page.getByRole("button").filter({ hasText: bank2 }).click
+        }
+
+        // Apply options.
+        if(options?.oneWay === true){ this.oneWay.check()}
+        if(options?.withDeltaX === true){ this.withDeltaExchange.check()}
+        if(options?.dxNot !== undefined){this.dxNotional.fill(options.dxNot)}
+        if(options?.atmFr !== undefined){this.atmForwardRate.fill(options.atmFr)}
+
         await this.SendBtn.click()
+
+        // Handle 'An error occurred' message that sometimes happens possibly due to deadlock.
+        let errorVisible = false
 
         await this.errormsg.waitFor({ state: "visible", timeout: 3000 }).catch(console.log)
 
