@@ -7,7 +7,7 @@ import sc from "../Data/shortcodes.json"
 import i from "../Data/importTypes.json"
 
 
-test.describe('Inflation test suite', () => {
+test.describe('manual test suite', () => {
 
     // Use soft assertions.
     const Expect = expect.configure({ soft: true });
@@ -57,7 +57,7 @@ test.describe('Inflation test suite', () => {
 
     })
 
-    test('Send INF shortcode and verify rfq status after ss acknowledges', async () => {
+    test('MAN Send INF shortcode and verify rfq status after ss acknowledges', async () => {
 
         await bs.loadsShortCode(sc.INF.EUR)
         await bs.sendsRFQ()
@@ -74,7 +74,7 @@ test.describe('Inflation test suite', () => {
 
     })
 
-    test(`upload outright TSV and verify rfq status after ss acknowledges`, async () => {
+    test(`MAN upload outright TSV and verify rfq status after ss acknowledges`, async () => {
 
         await bs.uploads('outright.tsv')
         await bs.importsRfqAs(i.rfqOnRate)
@@ -99,7 +99,7 @@ test.describe('Inflation test suite', () => {
 
     for (let i = 0; i < shortcodes.length; i++) {
 
-        test(`Send shortcodes and verify rfq status after ss acknowledges ${i}`, async () => {
+        test(`MAN Send shortcodes and verify rfq status after ss acknowledges ${i}`, async () => {
 
         await bs.loadsShortCode(shortcodes[i])
         await bs.sendsRFQ()

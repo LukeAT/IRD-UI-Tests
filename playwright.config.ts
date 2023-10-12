@@ -13,7 +13,7 @@ export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: false,
-  workers: 3,
+  workers: 4,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.

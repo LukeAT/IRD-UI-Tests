@@ -1,84 +1,121 @@
 import { test, expect, Page, BrowserContext } from "@playwright/test";
-import SignIn from "../Users/Shared/signin";
-import BuysidePage from "../Users/Buyside/bsPage";
+import BuysideUser from "../Users/buysideUser";
+import SellsideUser from "../Users/sellsideUser";
 import auth from "../Data/signInDetails.json"
 import rfqState from "../Data/rfqStates.json"
-import SellsidePage from "../Users/Sellside/ssPage";
+import sc from "../Data/shortcodes.json"
+import i from "../Data/importTypes.json"
 
 
-test.describe('overnight-index test suite', () => {
+test.describe('OIS test suite', () => {
 
-    //Use soft assertions.
-    const sExpect = expect.configure({ soft: true });
+    // Use soft assertions.
+    const Expect = expect.configure({ soft: true });
 
-    //Buyside browser context and pages.
+    // bs and ss context and page and user.
     let bsContext: BrowserContext
-    let bsPage: Page
-    let bsSignInPage: SignIn
-    let bs: BuysidePage
-
-    //Sellside browser context and pages.
     let ssContext: BrowserContext
+    let bsPage: Page
     let ssPage: Page
-    let ssSignInPage: SignIn
-    let ss: SellsidePage
+    let bs: BuysideUser
+    let ss: SellsideUser
 
     test.beforeAll(async ({ browser }) => {
 
-        //Instantiate buyside browser-context, context-page and page-objects.
+        //Instantiate bs and ss context, page and user.
         bsContext = await browser.newContext()
-        bsPage = await bsContext.newPage()
-        bsSignInPage = new SignIn(bsPage)
-        bs = new BuysidePage(bsPage)
-
-        //Instantiate sellside browser-context, context-page and page-objects.
         ssContext = await browser.newContext()
+        bsPage = await bsContext.newPage()
         ssPage = await ssContext.newPage()
-        ssSignInPage = new SignIn(ssPage)
-        ss = new SellsidePage(ssPage)
+        bs = new BuysideUser(bsPage)
+        ss = new SellsideUser(ssPage)
 
         //Sign in to bid.
-        await bsSignInPage.signIn(bsPage, auth.OIS.bs.username, auth.OIS.bs.password)
+        await bs.signIn(bsPage, auth.INF.bs.username, auth.INF.bs.password)
+        await ss.signIn(ssPage, auth.INF.ss1.username, auth.INF.ss1.password)
         await bsPage.goto('/api/bid/archiveallthethingsquickly')
-        await bsPage.goto('/')
-        await ssSignInPage.signIn(ssPage, auth.OIS.ss1.username, auth.OIS.ss1.password)
-    })
 
-    test.afterEach(async () => {
-        await bsPage.goto('/api/bid/archiveallthethingsquickly')
     })
 
     test.beforeEach(async () => {
-        await bsPage.goto('/')
+
         await ssPage.goto('/')
+        await bsPage.goto('/')
+
+    })
+
+    test.afterEach(async () => {
+
+        await bsPage.goto('/api/bid/archiveallthethingsquickly')
+
     })
 
     test.afterAll(async () => {
+
         await bsContext.close()
         await ssContext.close()
-    })
-
-    test(`FIRST send OIS shortcode and verify rfq status after ss acknowledges`, async () => {
-
-        await bs.sendShortCode('p eur 5y not 44mm')
-        await ss.ackButton.click()
-        await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
 
     })
 
-    test(`SECOND send OIS shortcode and verify rfq status after ss acknowledges`, async () => {
+    test('Send INF shortcode and verify rfq status after ss acknowledges', async () => {
 
-        await bs.sendShortCode('p eur 5y not 44mm')
-        await ss.ackButton.click()
-        await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
+        await bs.loadsShortCode(sc.INF.EUR)
+        await bs.sendsRFQ()
+        await ss.acknowledges()
+        await ss.quotes({ bid: '1.1', offer: '1.2' })
+        await bs.awardsBest("offer")
+        await ss.clicksDone()
+
+        bs.clicksSummaryTab()
+        await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
+        await Expect(bs.sumTabBankSide).toHaveText('Rec fixed')
+        await Expect(bs.sumTabWinningQuote).toHaveText('1.2%')
+        await Expect(bs.sumTabNotional.first()).toHaveText('50,000,000')
 
     })
 
-    test(`THIRD send OIS shortcode and verify rfq status after ss acknowledges`, async () => { 
+    test(`upload outright TSV and verify rfq status after ss acknowledges`, async () => {
 
-        await bs.sendShortCode('p eur 5y not 44mm')
-        await ss.ackButton.click()
-        await sExpect(bs.blotterStatus).toHaveText(rfqState.acknowledged)
+        await bs.uploads('outright.tsv')
+        await bs.importsRfqAs(i.rfqOnRate)
+        await bs.sendsRFQ()
+        await ss.acknowledges()
+        await ss.quotes({ bid: '1.1', offer: '1.2' })
+        await bs.awardsBest("offer")
+        await ss.clicksDone()
+
+        bs.clicksSummaryTab()
+        await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
+        await Expect(bs.sumTabBankSide).toHaveText('Rec fixed')
+        await Expect(bs.sumTabWinningQuote).toHaveText('1.2%')
+        await Expect(bs.sumTabNotional.first()).toHaveText('100,000,000')
 
     })
+
+    const shortcodes = [
+        sc.INF.EUR,
+        sc.OUT.EUR
+    ]
+
+    for (let i = 0; i < shortcodes.length; i++) {
+
+        test(`Send shortcodes and verify rfq status after ss acknowledges ${i}`, async () => {
+
+        await bs.loadsShortCode(shortcodes[i])
+        await bs.sendsRFQ()
+        await ss.acknowledges()
+        await ss.quotes({ bid: '1.1', offer: '1.2' })
+        await bs.awardsBest("offer")
+        await ss.clicksDone()
+
+        bs.clicksSummaryTab()
+        await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
+        await Expect(bs.sumTabBankSide).toHaveText('Rec fixed')
+        await Expect(bs.sumTabWinningQuote).toHaveText('1.2%')
+        await Expect(bs.sumTabNotional.first()).toHaveText('50,000,000')
+        
+        })
+    }
 })
+
+

@@ -4,7 +4,7 @@ import SellsideUser from "../Users/sellsideUser";
 import auth from "../Data/signInDetails.json"
 import rfqState from "../Data/rfqStates.json"
 import sc from "../Data/shortcodes.json"
-import swap from "../Data/instrument.json"
+import i from "../Data/importTypes.json"
 
 
 test.describe('Inflation test suite', () => {
@@ -57,34 +57,65 @@ test.describe('Inflation test suite', () => {
 
     })
 
-    test(`FIRST send INF shortcode and verify rfq status after ss acknowledges`, async () => {
+    test('INF Send INF shortcode and verify rfq status after ss acknowledges', async () => {
 
-        await bs.sendsShortCode(sc.inf.EUR)
+        await bs.loadsShortCode(sc.INF.EUR)
+        await bs.sendsRFQ()
         await ss.acknowledges()
-        await ss.quotes(swap.inf)
+        await ss.quotes({ bid: '1.1', offer: '1.2' })
         await bs.awardsBest("offer")
         await ss.clicksDone()
 
+        bs.clicksSummaryTab()
         await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
+        await Expect(bs.sumTabBankSide).toHaveText('Rec fixed')
+        await Expect(bs.sumTabWinningQuote).toHaveText('1.2%')
+        await Expect(bs.sumTabNotional.first()).toHaveText('50,000,000')
+
+    })
+
+    test(`INF upload outright TSV and verify rfq status after ss acknowledges`, async () => {
+
+        await bs.uploads('outright.tsv')
+        await bs.importsRfqAs(i.rfqOnRate)
+        await bs.sendsRFQ()
+        await ss.acknowledges()
+        await ss.quotes({ bid: '1.1', offer: '1.2' })
+        await bs.awardsBest("offer")
+        await ss.clicksDone()
+
+        bs.clicksSummaryTab()
+        await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
+        await Expect(bs.sumTabBankSide).toHaveText('Rec fixed')
+        await Expect(bs.sumTabWinningQuote).toHaveText('1.2%')
+        await Expect(bs.sumTabNotional.first()).toHaveText('100,000,000')
 
     })
 
     const shortcodes = [
-        sc.inf.EUR,
-        sc.outright.EUR,
+        sc.INF.EUR,
+        sc.OUT.EUR
     ]
 
     for (let i = 0; i < shortcodes.length; i++) {
-        test(`Send shortcodes and verify rfq status after ss acknowledges ${i}`, async () => {
 
-            await bs.sendsShortCode(shortcodes[i])
-            await ss.acknowledges()
-            await ss.quotes(swap.inf)
-            await bs.awardsBest("offer")
-            await ss.clicksDone()
+        test(`INF Send shortcodes and verify rfq status after ss acknowledges ${i}`, async () => {
 
-            await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
+        await bs.loadsShortCode(shortcodes[i])
+        await bs.sendsRFQ()
+        await ss.acknowledges()
+        await ss.quotes({ bid: '1.1', offer: '1.2' })
+        await bs.awardsBest("offer")
+        await ss.clicksDone()
+
+        bs.clicksSummaryTab()
+        await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
+        await Expect(bs.sumTabBankSide).toHaveText('Rec fixed')
+        await Expect(bs.sumTabWinningQuote).toHaveText('1.2%')
+        await Expect(bs.sumTabNotional.first()).toHaveText('50,000,000')
+        
         })
     }
-
 })
+
+
