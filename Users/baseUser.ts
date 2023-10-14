@@ -20,12 +20,13 @@ export default class BaseUser {
     readonly mainEconBankSide: Locator;
     readonly acceptDetailsBtn: Locator;
 
-    // Accept details.
-    readonly PremiumDir: Locator;
-    readonly premiumCents: Locator;
-    readonly premiumCash: Locator;
-    readonly DxDir: Locator;
-    readonly DxNot: Locator;
+    // Enter/Accept details modal.
+    readonly dmPremiumDir: Locator;
+    readonly dmPremiumCents: Locator;
+    readonly dmDxDirDropDown: Locator
+    readonly dmPremiumCash: Locator;
+    readonly dmDxDir: Locator;
+    readonly dmDxNot: Locator;
 
     // General actions.
     readonly AcceptBtn: Locator;
@@ -42,7 +43,7 @@ export default class BaseUser {
         this.blotterStatus = page.locator("//div[@id='statusIdCell']").first()
 
         // Blotter actions.
-        this.acceptDetailsBtn = page.getByRole('button').filter({ hasText: 'Accept Details' })
+        this.acceptDetailsBtn = page.getByRole('button').filter({ hasText: 'Accept Details' }).first()
 
 
         // Inspector.
@@ -53,11 +54,12 @@ export default class BaseUser {
 
 
         // Accept details.
-        this.PremiumDir = page.locator("#totalPremiumDirection")
-        this.premiumCents = page.locator("#totalPremiumRate")
-        this.premiumCash = page.locator("#totalPremiumCash")
-        this.DxDir = page.locator("#totalDeltaExchangeDirection")
-        this.DxNot = page.locator("#totaldeltaExchange")
+        this.dmPremiumDir = page.locator("#totalPremiumDirection")
+        this.dmPremiumCents = page.locator("#totalPremiumRate")
+        this.dmPremiumCash = page.locator("#totalPremiumCash")
+        this.dmDxDirDropDown = page.locator('select[name="totalDirection"]')
+        this.dmDxDir = page.locator("#totalDeltaExchangeDirection")
+        this.dmDxNot = page.locator("#totaldeltaExchange")
 
 
         // General actions.

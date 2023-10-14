@@ -28,12 +28,6 @@ export default class BuysideUser extends BasePage {
     readonly qPanelBestBid: Locator
     readonly qPanelBestOffer: Locator
 
-    // Inspector.
-    readonly summaryTab: Locator
-    readonly instDetailsTab: Locator
-    readonly dealSumWinningQuote: Locator
-    readonly mainEconBankSide: Locator
-    readonly mainEconNotional: Locator
 
 
 
@@ -102,19 +96,19 @@ export default class BuysideUser extends BasePage {
         dxNot?: string, 
         atmFr?: string 
 
-    }, bank1: string = 'MWMEGA') {
+    }) {
 
         await this.blotterSendBtn.click()
 
-        // Bank 1 is always selected.
-        this.page.getByRole("button").filter({ hasText: bank1 }).click()
+        // Bank 1 is hard coded as it is always selected.
+        await this.page.getByRole('button', { name: 'MWMEGA' }).click()
 
         // Apply options.
-        if (options?.bank2 !== undefined) { this.page.getByRole("button").filter({ hasText: options.bank2 }).click }
-        if (options?.oneWay === true) { this.oneWay.check() }
-        if (options?.withDeltaX === true) { this.withDeltaExchange.check() }
-        if (options?.dxNot !== undefined) { this.dxNotional.fill(options.dxNot) }
-        if (options?.atmFr !== undefined) { this.atmForwardRate.fill(options.atmFr) }
+        if (options?.bank2 !== undefined) { await this.page.getByRole("button").filter({ hasText: options.bank2 }).click() }
+        if (options?.oneWay === true) { await this.oneWay.click() }
+        if (options?.withDeltaX === true) { await this.withDeltaExchange.check() }
+        if (options?.dxNot !== undefined) { await this.dxNotional.fill(options.dxNot) }
+        if (options?.atmFr !== undefined) { await this.atmForwardRate.fill(options.atmFr) }
 
         await this.SendBtn.click()
 
@@ -149,12 +143,12 @@ export default class BuysideUser extends BasePage {
     }
 
     async clicksSummaryTab() {
-        this.summaryTab.click()
+        await this.summaryTab.click()
     }
 
     async clicksAcceptsDetails() {
 
-        this.acceptDetailsBtn.click()
+        await this.acceptDetailsBtn.click()
 
 
     }

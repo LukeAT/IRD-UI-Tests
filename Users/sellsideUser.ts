@@ -36,7 +36,6 @@ export default class SellsideUser extends BasePage {
         this.qPanelEnterDetails = page.locator("#btnEnterDetails")
 
         //enter details
-        this.enterDetailsDxDir = page.locator("//*[@name='totalDirection']")
         this.enterDetailSubmitBtn = page.locator('#submitButton')
 
     }
@@ -76,7 +75,7 @@ export default class SellsideUser extends BasePage {
         await this.qPanelEnterDetails.click()
 
         // Choose DX Direction.
-        if (options?.dxDir !== undefined) {await this.DxDir.selectOption(options.dxDir)}
+        if (options?.dxDir !== undefined) {await this.dmDxDirDropDown.selectOption(options.dxDir)}
    
         await this.enterDetailSubmitBtn.click()
 
