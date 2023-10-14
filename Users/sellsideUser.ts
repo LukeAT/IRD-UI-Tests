@@ -14,6 +14,12 @@ export default class SellsideUser extends BasePage {
     private readonly qPanelTrader: Locator;
     private readonly qPanelTraderOption1: Locator;
     private readonly qPanelDone: Locator;
+    private readonly qPanelEnterDetails: Locator;
+
+    // Enter details.
+    private readonly enterDetailSubmitBtn: Locator;
+
+
 
     constructor(page: Page) {
 
@@ -27,6 +33,11 @@ export default class SellsideUser extends BasePage {
         this.qPanelTrader = page.locator("#traderDropdown")
         this.qPanelTraderOption1 = page.locator("#traders > option:nth-child(1)")
         this.qPanelDone = page.locator("#btnDoneAction")
+        this.qPanelEnterDetails = page.locator("#btnEnterDetails")
+
+        //enter details
+        this.enterDetailsDxDir = page.locator("//*[@name='totalDirection']")
+        this.enterDetailSubmitBtn = page.locator('#submitButton')
 
     }
 
@@ -59,5 +70,17 @@ export default class SellsideUser extends BasePage {
         await this.qPanelQuote.click()
 
     }
+
+    async entersDetails(options?: { dxDir?: string }) {
+
+        await this.qPanelEnterDetails.click()
+
+        // Choose DX Direction.
+        if (options?.dxDir !== undefined) {await this.DxDir.selectOption(options.dxDir)}
+   
+        await this.enterDetailSubmitBtn.click()
+
+    }
+
 
 }

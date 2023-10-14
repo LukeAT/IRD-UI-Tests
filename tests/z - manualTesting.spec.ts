@@ -68,9 +68,9 @@ test.describe('manual test suite', () => {
 
         bs.clicksSummaryTab()
         await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
-        await Expect(bs.sumTabBankSide).toHaveText('Rec fixed')
-        await Expect(bs.sumTabWinningQuote).toHaveText('1.2%')
-        await Expect(bs.sumTabNotional.first()).toHaveText('50,000,000')
+        await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
+        await Expect(bs.dealSumWinningQuote).toHaveText('1.2%')
+        await Expect(bs.mainEconNotional.first()).toHaveText('100,000,000')
 
     })
 
@@ -86,9 +86,45 @@ test.describe('manual test suite', () => {
 
         bs.clicksSummaryTab()
         await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
-        await Expect(bs.sumTabBankSide).toHaveText('Rec fixed')
-        await Expect(bs.sumTabWinningQuote).toHaveText('1.2%')
-        await Expect(bs.sumTabNotional.first()).toHaveText('100,000,000')
+        await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
+        await Expect(bs.dealSumWinningQuote).toHaveText('1.2%')
+        await Expect(bs.mainEconNotional.first()).toHaveText('100,000,000')
+
+    })
+
+    test(`MAN upload swaption TSV and verify rfq status after ss acknowledges`, async () => {
+
+        await bs.uploads('swnBuyReceiverSpreadWithDxNot.tsv')
+        await bs.importsRfqAs(i.swaption)
+        await bs.sendsRFQ({ 
+            withDeltaX: true,
+            dxNot: '1,000,000', 
+            atmFr: '1.33', 
+            oneWay: true })
+        await ss.acknowledges()
+        await ss.quotes({ bid: '21'})
+        await bs.awardsBest('bid')
+        await ss.clicksDone()
+        await ss.entersDetails({ dxDir: 'Receive' })
+
+        await bs.clicksAcceptsDetails()
+
+        // Assert total row of accept details modal.
+        await Expect(bs.PremiumDir).toHaveText('Receive')
+        await Expect(bs.premiumCents).toHaveText('21')
+        await Expect(bs.premiumCash).toHaveText('420,000 USD')
+        await Expect(bs.DxDir).toHaveText('Receive')
+        await Expect(bs.DxNot).toHaveText('1,000,000')
+
+        await bs.clicksAccept()
+        await bs.clicksSummaryTab()
+
+        // Assert details after affirm.
+        await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
+        await Expect(bs.mainEconBankSide).toHaveText('Buy')
+        await Expect(bs.dealSumWinningQuote).toHaveText('21')
+        await Expect(bs.mainEconNotional.first()).toHaveText('200,000,000')
+        await Expect(bs.qPanelBestBid).toContainText(['21 c', 'MWMEGA', '420,000', 'USD'])
 
     })
 
