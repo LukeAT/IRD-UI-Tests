@@ -1,8 +1,7 @@
-import { test, expect, Page, BrowserContext } from "@playwright/test";
-import BuysideUser from "../Users/buysideUser";
-import SellsideUser from "../Users/sellsideUser";
+import { test, expect, Page, BrowserContext } from "@playwright/test"
+import BuysideUser from "../Users/buysideUser"
+import SellsideUser from "../Users/sellsideUser"
 import auth from "../Data/signInDetails.json"
-import rfqState from "../Data/rfqStates.json"
 import sc from "../Data/shortcodes.json"
 import i from "../Data/importTypes.json"
 
@@ -22,7 +21,7 @@ test.describe('manual test suite', () => {
 
     test.beforeAll(async ({ browser }) => {
 
-        //Instantiate bs and ss context, page and user.
+        // Instantiate bs and ss context, page and user.
         bsContext = await browser.newContext()
         ssContext = await browser.newContext()
         bsPage = await bsContext.newPage()
@@ -30,7 +29,7 @@ test.describe('manual test suite', () => {
         bs = new BuysideUser(bsPage)
         ss = new SellsideUser(ssPage)
 
-        //Sign in to bid.
+        // Sign in to bid.
         await bs.signIn(bsPage, auth.INF.bs.username, auth.INF.bs.password)
         await ss.signIn(ssPage, auth.INF.ss1.username, auth.INF.ss1.password)
         await bsPage.goto('/api/bid/archiveallthethingsquickly')
@@ -67,10 +66,10 @@ test.describe('manual test suite', () => {
         await ss.clicksDone()
 
         bs.clicksSummaryTab()
-        await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
+        await Expect(bs.blotterStatus).toHaveText('Affirmed')
         await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
         await Expect(bs.dealSumWinningQuote).toHaveText('1.2%')
-        await Expect(bs.mainEconNotional.first()).toHaveText('100,000,000')
+        await Expect(bs.mainEconNotional.first()).toHaveText('50,000,000')
 
     })
 
@@ -85,7 +84,7 @@ test.describe('manual test suite', () => {
         await ss.clicksDone()
 
         bs.clicksSummaryTab()
-        await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
+        await Expect(bs.blotterStatus).toHaveText('Affirmed')
         await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
         await Expect(bs.dealSumWinningQuote).toHaveText('1.2%')
         await Expect(bs.mainEconNotional.first()).toHaveText('100,000,000')
@@ -106,7 +105,6 @@ test.describe('manual test suite', () => {
         await bs.awardsBest('bid')
         await ss.clicksDone()
         await ss.entersDetails({ dxDir: 'Receive' })
-
         await bs.clicksAcceptsDetails()
 
         // Assert total row of accept details modal.
@@ -115,13 +113,12 @@ test.describe('manual test suite', () => {
         await Expect(bs.dmPremiumCash).toHaveText('420,000 USD')
         await Expect(bs.dmDxDir).toHaveText('Pay')
         await Expect(bs.dmDxNot).toHaveText('1,000,000')
-
+        
         await bs.clicksAccept()
         await bs.clicksSummaryTab()
 
         // Assert details after affirm.
-        await bsPage.setViewportSize({ width:1440, height: 1440})
-        await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
+        await Expect(bs.blotterStatus).toHaveText('Affirmed')
         await Expect(bs.qPanelBestBid).toContainText('21 c  - MWMEGA420,000 USD')
         await Expect(bs.dealSumWinningQuote).toHaveText('21 c')
         await Expect(bs.mainEconNotional.first()).toHaveText('200,000,000')
@@ -146,10 +143,10 @@ test.describe('manual test suite', () => {
         await ss.clicksDone()
 
         bs.clicksSummaryTab()
-        await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
-        await Expect(bs.sumTabBankSide).toHaveText('Rec fixed')
+        await Expect(bs.blotterStatus).toHaveText('Affirmed')
+        await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
         await Expect(bs.dealSumWinningQuote).toHaveText('1.2%')
-        await Expect(bs.sumTabNotional.first()).toHaveText('50,000,000')
+        await Expect(bs.mainEconNotional.first()).toHaveText('50,000,000')
         
         })
     }

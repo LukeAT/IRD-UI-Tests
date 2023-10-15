@@ -49,7 +49,7 @@ export default class BaseUser {
         // Inspector.
         this.summaryTab = page.locator("#tabSummary")
         this.dealSumWinningQuote = page.locator("#dealSummaryWinningQuote")
-        this.mainEconNotional = page.locator("#mainEconomicsNotional0")
+        this.mainEconNotional = page.locator("#notional0")
         this.mainEconBankSide = page.locator("#mainEconomicsBankSide0")
 
 
