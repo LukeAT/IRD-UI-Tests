@@ -14,22 +14,25 @@ export default class BaseUser {
     readonly blotterStatus: Locator
 
     // Inspector.
-    readonly summaryTab: Locator;
-    readonly dealSumWinningQuote: Locator;
-    readonly mainEconNotional: Locator;
-    readonly mainEconBankSide: Locator;
-    readonly acceptDetailsBtn: Locator;
+    readonly summaryTab: Locator
+    readonly winningQuote: Locator
+    readonly mainEconNotional: Locator
+    readonly mainEconBankSide: Locator
+    readonly acceptDetailsBtn: Locator
 
     // Enter/Accept details modal.
-    readonly dmPremiumDir: Locator;
-    readonly dmPremiumCents: Locator;
+    readonly dmPremiumDir: Locator
+    readonly dmPremiumCents: Locator
     readonly dmDxDirDropDown: Locator
-    readonly dmPremiumCash: Locator;
-    readonly dmDxDir: Locator;
-    readonly dmDxNot: Locator;
+    readonly dmPremiumCash: Locator
+    readonly dmDxDir: Locator
+    readonly dmDxNot: Locator
 
     // General actions.
-    readonly AcceptBtn: Locator;
+    readonly AcceptBtn: Locator
+
+    // Inspector tabs.
+    readonly swnTab: Locator
 
     
     constructor(page: Page) {
@@ -48,7 +51,7 @@ export default class BaseUser {
 
         // Inspector.
         this.summaryTab = page.locator("#tabSummary")
-        this.dealSumWinningQuote = page.locator("#dealSummaryWinningQuote")
+        this.winningQuote = page.locator("#dealSummaryWinningQuote")
         this.mainEconNotional = page.locator("#notional0")
         this.mainEconBankSide = page.locator("#mainEconomicsBankSide0")
 
@@ -64,6 +67,9 @@ export default class BaseUser {
 
         // General actions.
         this.AcceptBtn = page.locator('#submitButton')
+
+        // Inpector tabs.
+        this.swnTab = page.locator('a').filter({ hasText: 'SWAPTION' })
 
 
     }
@@ -89,6 +95,10 @@ export default class BaseUser {
 
         this.AcceptBtn.click()
     
+    }
+
+    async clicksSwnTab() {
+        this.swnTab.click()
     }
 
     

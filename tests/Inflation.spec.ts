@@ -1,13 +1,12 @@
-import { test, expect, Page, BrowserContext } from "@playwright/test";
-import BuysideUser from "../Users/buysideUser";
-import SellsideUser from "../Users/sellsideUser";
-import auth from "../Data/signInDetails.json"
-import rfqState from "../Data/rfqStates.json"
-import sc from "../Data/shortcodes.json"
-import i from "../Data/importTypes.json"
+import { test, expect, Page, BrowserContext } from "@playwright/test"
+import BuysideUser from "../Users/buysideUser"
+import SellsideUser from "../Users/sellsideUser"
+import auth from "../Data/frameworkData/signInDetails.json"
+import sc from "../Data/frameworkData/shortcodes.json"
+import i from "../Data/frameworkData/importTypes.json"
 
 
-test.describe('Inflation test suite', () => {
+test.describe('Verify details for inflation swaps.', () => {
 
     // Use soft assertions.
     const Expect = expect.configure({ soft: true });
@@ -22,7 +21,7 @@ test.describe('Inflation test suite', () => {
 
     test.beforeAll(async ({ browser }) => {
 
-        //Instantiate bs and ss context, page and user.
+        // Instantiate bs and ss context, page and user.
         bsContext = await browser.newContext()
         ssContext = await browser.newContext()
         bsPage = await bsContext.newPage()
@@ -30,7 +29,7 @@ test.describe('Inflation test suite', () => {
         bs = new BuysideUser(bsPage)
         ss = new SellsideUser(ssPage)
 
-        //Sign in to bid.
+        // Sign in to bid.
         await bs.signIn(bsPage, auth.INF.bs.username, auth.INF.bs.password)
         await ss.signIn(ssPage, auth.INF.ss1.username, auth.INF.ss1.password)
         await bsPage.goto('/api/bid/archiveallthethingsquickly')
@@ -57,7 +56,7 @@ test.describe('Inflation test suite', () => {
 
     })
 
-    test('INF Send INF shortcode and verify rfq status after ss acknowledges', async () => {
+    test('INF Send INF shortcode and verify details after affirm.', async () => {
 
         await bs.loadsShortCode(sc.INF.EUR)
         await bs.sendsRFQ()
@@ -65,16 +64,16 @@ test.describe('Inflation test suite', () => {
         await ss.quotes({ bid: '1.1', offer: '1.2' })
         await bs.awardsBest("offer")
         await ss.clicksDone()
-
         bs.clicksSummaryTab()
-        await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
-        await Expect(bs.sumTabBankSide).toHaveText('Rec fixed')
-        await Expect(bs.sumTabWinningQuote).toHaveText('1.2%')
-        await Expect(bs.sumTabNotional.first()).toHaveText('50,000,000')
+
+        // Affirm-time assertions.
+        await Expect(bs.blotterStatus).toHaveText('Affirmed')
+        await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
+        await Expect(bs.winningQuote).toHaveText('1.2%')
 
     })
 
-    test(`INF upload outright TSV and verify rfq status after ss acknowledges`, async () => {
+    test('INF upload outright TSV and verify details after affirm.', async () => {
 
         await bs.uploads('outright.tsv')
         await bs.importsRfqAs(i.rfqOnRate)
@@ -83,13 +82,47 @@ test.describe('Inflation test suite', () => {
         await ss.quotes({ bid: '1.1', offer: '1.2' })
         await bs.awardsBest("offer")
         await ss.clicksDone()
-
         bs.clicksSummaryTab()
-        await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
-        await Expect(bs.sumTabBankSide).toHaveText('Rec fixed')
-        await Expect(bs.sumTabWinningQuote).toHaveText('1.2%')
-        await Expect(bs.sumTabNotional.first()).toHaveText('100,000,000')
 
+        // Affirm-time assertions.
+        await Expect(bs.blotterStatus).toHaveText('Affirmed')
+        await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
+        await Expect(bs.winningQuote).toHaveText('1.2%')
+
+    })
+
+    test(`INF upload swaption and verify enter details and summary tab after affirm.`, async () => {
+
+        await bs.uploads('swnBuyReceiverSpreadWithDxNot.tsv')
+        await bs.importsRfqAs(i.swaption)
+        await bs.sendsRFQ({ 
+            withDeltaX: true,
+            dxNot: '1,000,000', 
+            atmFr: '1.33', 
+            oneWay: true })
+        await ss.acknowledges()
+        await ss.quotes({ bid: '21'})
+        await bs.awardsBest('bid')
+        await ss.clicksDone()
+        await ss.entersDetails({ dxDir: 'Receive' })
+        await bs.clicksAcceptsDetails()
+
+        // Accept details assertions.
+        await Expect(bs.dmPremiumDir).toHaveText('Receive')
+        await Expect(bs.dmPremiumCents).toHaveText('21 c')
+        await Expect(bs.dmPremiumCash).toHaveText('420,000 USD')
+        await Expect(bs.dmDxDir).toHaveText('Pay')
+        await Expect(bs.dmDxNot).toHaveText('1,000,000')
+        
+        await bs.clicksAccept()
+        await bs.clicksSummaryTab()
+
+        // Affirm-time assertions.
+        await Expect(bs.blotterStatus).toHaveText('Affirmed')
+        await Expect(bs.qPanelBestBid).toContainText('21 c  - MWMEGA420,000 USD')
+        await Expect(bs.winningQuote).toHaveText('21 c')
+        await Expect(bs.mainEconBankSide).toHaveText('Buy')
+        
     })
 
     const shortcodes = [
@@ -99,7 +132,7 @@ test.describe('Inflation test suite', () => {
 
     for (let i = 0; i < shortcodes.length; i++) {
 
-        test(`INF Send shortcodes and verify rfq status after ss acknowledges ${i}`, async () => {
+        test(`INF Send shortcodes and verify details after affirm. ${i}`, async () => {
 
         await bs.loadsShortCode(shortcodes[i])
         await bs.sendsRFQ()
@@ -107,13 +140,13 @@ test.describe('Inflation test suite', () => {
         await ss.quotes({ bid: '1.1', offer: '1.2' })
         await bs.awardsBest("offer")
         await ss.clicksDone()
-
         bs.clicksSummaryTab()
-        await Expect(bs.blotterStatus).toHaveText(rfqState.Affirmed)
-        await Expect(bs.sumTabBankSide).toHaveText('Rec fixed')
-        await Expect(bs.sumTabWinningQuote).toHaveText('1.2%')
-        await Expect(bs.sumTabNotional.first()).toHaveText('50,000,000')
-        
+
+        // Affirm-time assertions.
+        await Expect(bs.blotterStatus).toHaveText('Affirmed')
+        await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
+        await Expect(bs.winningQuote).toHaveText('1.2%')
+
         })
     }
 })
