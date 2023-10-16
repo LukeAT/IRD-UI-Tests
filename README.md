@@ -1,35 +1,38 @@
-REQUIREMENTS:
+# IRD AUTO-UI
+
+### REQUIREMENTS:
 - Node.js 16+ (as of 16/10/2023)
 
 
-PROJECT SETUP:
-1 - When opening for the first time, accept 'recommended extensions' popup.
-2 - npm install
-3 - npx playwright install chromium firefox webkit
-4 - Choose the title of a test and run:  npx playwright test -g "test title name here"
+### PROJECT SETUP:
+1. When opening for the first time, accept 'recommended extensions' popup.
+2. Run: `npm install`
+3. Run: `npx playwright install chromium firefox webkit`
+4. Choose the title of a test and run: `npx playwright test -g "test title name here"`
 
 
-BASIC COMMANDS:
-npx playwright test                             - Run all spec files in parallel, in headless mode. 
-npx playwright test tests/outright.spec.ts      - Run a specific test file.
-npx playwright test tests/outright.spec.ts:94   - Run a specific test by specifying the line the test method is on.
+### BASIC COMMANDS:
+- Run all spec files in parallel, in headless mode: `npx playwright test`
+- Run a specific test file: `npx playwright test tests/outright.spec.ts`
+- Run a specific test by specifying the line the test method is on: `npx playwright test tests/outright.spec.ts:94`
 
-FLAGS:
---headed        - Show browser when running test.
---debug         - Run in debug mode.
---ui            - Run in UI mode.
---trace on      - Create a trace for any failed tests.
+
+### FLAGS:
+- Show browser when running test: `--headed`
+- Create a trace for failed tests: `--trace on`
+- Run in debug mode: `--debug`
+- Run in UI mode: `--ui`
 
 more commands and flags here... https://playwright.dev/docs/test-cli
 
 
-SNIPPETS:      
-pw-describe   - New describe block.
-pw-test       - New test method.
-pw- ...       - Many others available.
+### CODE SNIPPETS:      
+- New describe block: `pw-describe`
+- New test method: `pw-test`
+- Many others available just type `pw-` in a test method to see them.
 
 
-FRAMEWORK:
+### FRAMEWORK:
 - We do not use Page Objects or the POM, we have User Objects instead. Buyside, Sellside, and Base.
 - Tests are run using 1 bs and 1 ss org, so there's one set of ref data for bs and one for ss. 
 - Each test suite (spec file) has it's own bs and ss desk and user, permissioned only with each other.
@@ -39,7 +42,7 @@ However we could mock data if turning integrations off becomes a blocker. If we 
 could have a spec file dedicated to testing integrations in a test environment. 'integrations.spec.ts' for example.
 
 
-STANDARDS:
+### STANDARDS:
 - Only use soft assertions so we can make assertions throughout the workflow from New to Affirmed.
 - When a change to IRD requires automated testing:
     - If you can add the needed assertion(s) to an existing test, without modifying the workflow, do that.

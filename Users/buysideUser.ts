@@ -29,8 +29,6 @@ export default class BuysideUser extends BasePage {
     readonly qPanelBestOffer: Locator
 
 
-
-
     constructor(page: Page) {
 
         super(page)
@@ -56,14 +54,13 @@ export default class BuysideUser extends BasePage {
         // Quoting panel.
         this.qPanelBestBid = page.locator("//button[@id='btnAwardBid']")
         this.qPanelBestOffer = page.locator("//button[@id='btnAwardOffer']")
-        
 
     }
 
     async uploads(fileName: string) {
 
         await this.page.evaluate(() => {
-            return fetch('https://uat3.otcxtrading.com/api/import/ArchiveStagedEntries'); // Replace with your desired URL
+            return fetch('https://uat3.otcxtrading.com/api/import/ArchiveStagedEntries')
         });
 
         const filePath = path.join(__dirname, '../Data/RFQs/' + fileName)
@@ -112,6 +109,7 @@ export default class BuysideUser extends BasePage {
 
         await this.SendBtn.click()
 
+        // TODO: Handle this error better so it doesn't show as a fail and doesn't log to console.
         // Handle 'An error occurred' message that sometimes happens possibly due to deadlock.
         let errorVisible = false
 
@@ -149,7 +147,6 @@ export default class BuysideUser extends BasePage {
     async clicksAcceptsDetails() {
 
         await this.acceptDetailsBtn.click()
-
 
     }
 }
