@@ -1,14 +1,15 @@
-# IRD AUTO-UI
+# IRD-AUTO-UI
 
 ### REQUIREMENTS:
 - Node.js 16+ (as of 16/10/2023)
 
 
 ### PROJECT SETUP:
-1. When opening for the first time, accept 'recommended extensions' popup.
-2. Run: `npm install`
-3. Run: `npx playwright install chromium firefox webkit`
-4. Choose the title of a test and run: `npx playwright test -g "test title name here"`
+1. Clone from https://github.com/LukeAT/IRD-UI-Tests
+2. When opening for the first time, accept 'recommended extensions' popup.
+3. Run: `npm install`
+4. Run: `npx playwright install chromium firefox webkit`
+5. Choose the title of a test and run: `npx playwright test -g "test title name here"`
 
 
 ### BASIC COMMANDS:
@@ -20,7 +21,6 @@
 ### FLAGS:
 - Show browser when running test: `--headed`
 - Create a trace for failed tests: `--trace on`
-- Run in debug mode: `--debug`
 - Run in UI mode: `--ui`
 
 more commands and flags here... https://playwright.dev/docs/test-cli
@@ -29,7 +29,7 @@ more commands and flags here... https://playwright.dev/docs/test-cli
 ### CODE SNIPPETS:      
 - New describe block: `pw-describe`
 - New test method: `pw-test`
-- Many others available just type `pw-` in a test method to see them.
+- Many others available just type `pw-` in a spec file to see them.
 
 
 ### FRAMEWORK:
@@ -38,17 +38,18 @@ more commands and flags here... https://playwright.dev/docs/test-cli
 - Each test suite (spec file) has it's own bs and ss desk and user, permissioned only with each other.
 - Tests within a spec file run sequentially. Spec files run in parallel with each other.
 - All integrations (e.g. Markitwire, Triana, ANNADSB) are turned off, we only want to test our own code.
-However we could mock data if turning integrations off becomes a blocker. If we wanted to test our integrations we 
-could have a spec file dedicated to testing integrations in a test environment. 'integrations.spec.ts' for example.
+- TODO Look into adding id's to bid if needed. 
 
 
 ### STANDARDS:
 - Only use soft assertions so we can make assertions throughout the workflow from New to Affirmed.
+- There is no drawback to putting soft assertions in an existing test rather than a new one, all fails are reported and execution continues uninterrupted.
 - When a change to IRD requires automated testing:
     - If you can add the needed assertion(s) to an existing test, without modifying the workflow, do that.
     - If the new assertions can only be made with a new workflow, write a new test.
     - We want to be able to run all tests multiple times a day so new tests should only be created when it's the only option.
 - Only use playwrights auto-retrying assertions.
 - Use playwrights recommended locators whenever possible.
+
 
 

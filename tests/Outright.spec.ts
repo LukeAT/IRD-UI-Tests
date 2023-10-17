@@ -91,7 +91,7 @@ test.describe('Verify details for outright swaps', () => {
 
     })
 
-    test(`OUT upload swaption and verify enter details and summary tab after affirm.`, async () => {
+    test(`OUT upload swaption and verify enter details, then summary tab after affirm.`, async () => {
 
         await bs.uploads('swnBuyReceiverSpreadWithDxNot.tsv')
         await bs.importsRfqAs(i.swaption)
