@@ -5,11 +5,11 @@
 
 
 ### PROJECT SETUP:
-1. Clone from https://github.com/LukeAT/IRD-UI-Tests
+1. Clone to vscode https://github.com/LukeAT/IRD-UI-Tests
 2. When opening for the first time, accept 'recommended extensions' popup.
 3. Run: `npm install`
 4. Run: `npx playwright install chromium firefox webkit`
-5. Choose the title of a test and run: `npx playwright test -g "test title name here"`
+5. Run a test: `npx playwright test -g "INF Send INF shortcode and verify details after affirm."`
 
 
 ### BASIC COMMANDS:
