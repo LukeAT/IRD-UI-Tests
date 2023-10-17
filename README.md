@@ -1,4 +1,4 @@
-# IRD-AUTO-UI
+# IRD-UI-TESTS
 
 ### REQUIREMENTS:
 - Node.js 16+ (as of 16/10/2023)
@@ -7,8 +7,8 @@
 ### PROJECT SETUP:
 1. Clone to vscode https://github.com/LukeAT/IRD-UI-Tests
 2. When opening for the first time, accept 'recommended extensions' popup.
-3. Run: `npm install`
-4. Run: `npx playwright install chromium firefox webkit`
+3. Install dependencies: `npm install`
+4. Install browsers: `npx playwright install chromium firefox webkit`
 5. Run a test: `npx playwright test -g "INF Send INF shortcode and verify details after affirm."`
 
 
@@ -33,8 +33,9 @@ more commands and flags here... https://playwright.dev/docs/test-cli
 
 
 ### FRAMEWORK:
-- We do not use Page Objects or the POM, we have User Objects instead. Buyside, Sellside, and Base as they are
-a more accurate implementation of the [Single-responsibility principle](https://en.wikipedia.org/wiki/Single-responsibility_principle)
+- We do not use Page Objects or the POM, we have User Objects instead: Buyside, Sellside, and Base. 
+This follows the roles emphasis of the [Single-responsibility principle](https://en.wikipedia.org/wiki/Single-responsibility_principle)
+and allows the tests to be written from the users' perspective.
 - Tests are run using 1 bs and 1 ss org, so there's one set of ref data for bs and one for ss. 
 - Each test suite (spec file) has it's own bs and ss desk and user, permissioned only with each other.
 - Tests within a spec file run sequentially. Spec files run in parallel with each other.
