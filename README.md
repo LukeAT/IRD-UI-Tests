@@ -33,7 +33,8 @@ more commands and flags here... https://playwright.dev/docs/test-cli
 
 
 ### FRAMEWORK:
-- We do not use Page Objects or the POM, we have User Objects instead. Buyside, Sellside, and Base.
+- We do not use Page Objects or the POM, we have User Objects instead. Buyside, Sellside, and Base as they are
+a more accurate implementation of the [Single-responsibility principle](https://en.wikipedia.org/wiki/Single-responsibility_principle)
 - Tests are run using 1 bs and 1 ss org, so there's one set of ref data for bs and one for ss. 
 - Each test suite (spec file) has it's own bs and ss desk and user, permissioned only with each other.
 - Tests within a spec file run sequentially. Spec files run in parallel with each other.
