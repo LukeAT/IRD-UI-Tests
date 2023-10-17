@@ -66,7 +66,7 @@ test.describe('Verify details for outright swaps', () => {
         await ss.clicksDone()
         bs.clicksSummaryTab()
 
-        // Affirm-time assertions.
+        // Check inspector values after Affirm.
         await Expect(bs.blotterStatus).toHaveText('Affirmed')
         await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
         await Expect(bs.winningQuote).toHaveText('1.2%')
@@ -84,7 +84,7 @@ test.describe('Verify details for outright swaps', () => {
         await ss.clicksDone()
         bs.clicksSummaryTab()
 
-        // Affirm-time assertions.
+        // Check inspector values after Affirm.
         await Expect(bs.blotterStatus).toHaveText('Affirmed')
         await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
         await Expect(bs.winningQuote).toHaveText('1.2%')
@@ -107,7 +107,7 @@ test.describe('Verify details for outright swaps', () => {
         await ss.entersDetails({ dxDir: 'Receive' })
         await bs.clicksAcceptsDetails()
 
-        // Accept details assertions.
+        // Check Accept details modal values.
         await Expect(bs.dmPremiumDir).toHaveText('Receive')
         await Expect(bs.dmPremiumCents).toHaveText('21 c')
         await Expect(bs.dmPremiumCash).toHaveText('420,000 USD')
@@ -117,7 +117,7 @@ test.describe('Verify details for outright swaps', () => {
         await bs.clicksAccept()
         await bs.clicksSummaryTab()
 
-        // Affirm-time assertions.
+        // Check inspector values after Affirm.
         await Expect(bs.blotterStatus).toHaveText('Affirmed')
         await Expect(bs.qPanelBestBid).toContainText('21 c  - MWMEGA420,000 USD')
         await Expect(bs.winningQuote).toHaveText('21 c')
@@ -142,7 +142,7 @@ test.describe('Verify details for outright swaps', () => {
         await ss.clicksDone()
         bs.clicksSummaryTab()
 
-        // Affirm-time assertions.
+        // Check inspector values after Affirm.
         await Expect(bs.blotterStatus).toHaveText('Affirmed')
         await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
         await Expect(bs.winningQuote).toHaveText('1.2%')

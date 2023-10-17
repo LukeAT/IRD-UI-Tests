@@ -38,6 +38,8 @@ more commands and flags here... https://playwright.dev/docs/test-cli
 - Each test suite (spec file) has it's own bs and ss desk and user, permissioned only with each other.
 - Tests within a spec file run sequentially. Spec files run in parallel with each other.
 - All integrations (e.g. Markitwire, Triana, ANNADSB) are turned off, we only want to test our own code.
+- Don't go above 3 workers when running tests in parallel. Testing against UAT3 (for now) there is a 
+strong relationship between workers and test flakiness.
 - TODO Look into adding id's to bid if needed. 
 
 
@@ -50,6 +52,7 @@ more commands and flags here... https://playwright.dev/docs/test-cli
     - We want to be able to run all tests multiple times a day so new tests should only be created when it's the only option.
 - Only use playwrights auto-retrying assertions.
 - Use playwrights recommended locators whenever possible.
+- Use TODO's and the 'Todo Tree' recommended extension to keep this project organised.
 
 
 

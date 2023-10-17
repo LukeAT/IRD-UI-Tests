@@ -66,7 +66,7 @@ test.describe('Verify details for inflation swaps.', () => {
         await ss.clicksDone()
         bs.clicksSummaryTab()
 
-        // Affirm-time assertions.
+        // Check inspector values after Affirm.
         await Expect(bs.blotterStatus).toHaveText('Affirmed')
         await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
         await Expect(bs.winningQuote).toHaveText('1.2%')
@@ -84,7 +84,7 @@ test.describe('Verify details for inflation swaps.', () => {
         await ss.clicksDone()
         bs.clicksSummaryTab()
 
-        // Affirm-time assertions.
+        // Check inspector values after Affirm.
         await Expect(bs.blotterStatus).toHaveText('Affirmed')
         await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
         await Expect(bs.winningQuote).toHaveText('1.2%')
@@ -142,7 +142,7 @@ test.describe('Verify details for inflation swaps.', () => {
         await ss.clicksDone()
         bs.clicksSummaryTab()
 
-        // Affirm-time assertions.
+        // Check inspector values after Affirm.
         await Expect(bs.blotterStatus).toHaveText('Affirmed')
         await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
         await Expect(bs.winningQuote).toHaveText('1.2%')
