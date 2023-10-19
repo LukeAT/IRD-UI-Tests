@@ -40,14 +40,12 @@ and allows the tests to be written from the users' perspective.
 - Each test suite (spec file) has it's own bs and ss desk and user, permissioned only with each other.
 - Tests within a spec file run sequentially. Spec files run in parallel with each other.
 - All integrations (e.g. Markitwire, Triana, ANNADSB) are turned off, we only want to test our own code.
-- Don't go above 3 workers when running tests in parallel. Testing against UAT3 (for now) there is a 
-strong relationship between workers and test flakiness.
-- TODO Look into adding id's to bid if needed. 
+- Don't go above 3 workers when running tests in parallel. Testing against UAT3 (for now) there is a strong relationship between workers and test flakiness. 
 
 
 ### STANDARDS:
-- Only **use *soft* assertions in test methods** so we can assert things throughout the workflow from New to Affirmed. There is no drawback to putting soft assertions in an existing test rather than a new one, all fails are reported and execution continues uninterrupted.
-- **Use *normal* assertions in the user action methods** within user objects (`sendsRfq()` for example). This allows us to fail fast.
+- **Use *soft* assertions in test methods** so we can assert things throughout the workflow from New to Affirmed. There is no drawback to putting soft assertions in an existing test rather than a new one, all fails are reported and execution continues uninterrupted.
+- **Use *normal* assertions in the user action methods** within user objects, such as `sendsRfq()`. This allows us to fail faster.
 - When a change to IRD requires automated testing:
     - If you can add the needed assertion(s) to an existing test, without modifying the workflow, do that.
     - If the new assertions can only be made with a new workflow, write a new test.
@@ -56,6 +54,11 @@ strong relationship between workers and test flakiness.
 - Use playwrights recommended locators whenever possible.
 - Use TODO's and the 'Todo Tree' recommended extension to keep this project organised.
 - Use CSS locators over Xpath.
+
+
+### Some TODO's
+- Use config more. credentials in config. Configs can inherit from another.
+- Look into adding id's to bid if needed.
 
 
 
