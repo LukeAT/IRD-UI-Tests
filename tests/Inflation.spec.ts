@@ -19,6 +19,8 @@ test.describe('Verify details for inflation swaps.', () => {
     let bs: BuysideUser
     let ss: SellsideUser
 
+    // Pass in browser to bs ss user class, instantiate in the class. Pass in credentials here too.
+
     test.beforeAll(async ({ browser }) => {
 
         // Instantiate bs and ss context, page and user.
@@ -69,7 +71,7 @@ test.describe('Verify details for inflation swaps.', () => {
         // Check inspector values after Affirm.
         await Expect(bs.blotterStatus).toHaveText('Affirmed')
         await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
-        await Expect(bs.winningQuote).toHaveText('1.2%')
+        await Expect(bs.winningQuote).toHaveText('1.2%')        
 
     })
 
@@ -128,7 +130,9 @@ test.describe('Verify details for inflation swaps.', () => {
     const shortcodes = [
         sc.INF.EUR,
         sc.OUT.EUR
-    ]
+    ] 
+
+    // use config more. credentials in config. Configs can inherit from another.
 
     for (let i = 0; i < shortcodes.length; i++) {
 

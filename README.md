@@ -46,8 +46,8 @@ strong relationship between workers and test flakiness.
 
 
 ### STANDARDS:
-- Only use soft assertions so we can make assertions throughout the workflow from New to Affirmed.
-- There is no drawback to putting soft assertions in an existing test rather than a new one, all fails are reported and execution continues uninterrupted.
+- Only **use *soft* assertions in test methods** so we can assert things throughout the workflow from New to Affirmed. There is no drawback to putting soft assertions in an existing test rather than a new one, all fails are reported and execution continues uninterrupted.
+- **Use *normal* assertions in the user action methods** within user objects (`sendsRfq()` for example). This allows us to fail fast.
 - When a change to IRD requires automated testing:
     - If you can add the needed assertion(s) to an existing test, without modifying the workflow, do that.
     - If the new assertions can only be made with a new workflow, write a new test.
@@ -55,6 +55,7 @@ strong relationship between workers and test flakiness.
 - Only use playwrights auto-retrying assertions.
 - Use playwrights recommended locators whenever possible.
 - Use TODO's and the 'Todo Tree' recommended extension to keep this project organised.
+- Use CSS locators over Xpath.
 
 
 

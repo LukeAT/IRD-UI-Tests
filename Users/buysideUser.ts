@@ -28,15 +28,14 @@ export default class BuysideUser extends BasePage {
     readonly qPanelBestBid: Locator
     readonly qPanelBestOffer: Locator
 
-
     constructor(page: Page) {
 
         super(page)
         this.page = page
 
         // Load shortcode.
-        this.shortCodeInput = page.locator('//input[@id="shortCodeEntry"]')
-        this.goBtn = page.locator('//*[@id="goFlyMyPretties"]')
+        this.shortCodeInput = page.locator('#shortCodeEntry')
+        this.goBtn = page.locator('#goFlyMyPretties')
 
         // Go to Staging.
         this.goToStagingBtn = page.locator('#gotoimportid')
@@ -44,7 +43,7 @@ export default class BuysideUser extends BasePage {
 
         // Send RFQ.
         this.blotterSendBtn = page.getByRole("button").filter({ hasText: "Send" })
-        this.SendBtn = page.locator("//button[@id='submitButton']")
+        this.SendBtn = page.locator('#submitButton')
         this.errormsg = page.getByText('An error occurred.')
         this.withDeltaExchange = page.getByLabel('With Delta Exchange')
         this.dxNotional = page.locator('#deltaExchangeInputField')
@@ -52,8 +51,8 @@ export default class BuysideUser extends BasePage {
         this.oneWay = page.getByLabel('One Way')
 
         // Quoting panel.
-        this.qPanelBestBid = page.locator("//button[@id='btnAwardBid']")
-        this.qPanelBestOffer = page.locator("//button[@id='btnAwardOffer']")
+        this.qPanelBestBid = page.locator('#btnAwardBid')
+        this.qPanelBestOffer = page.locator('#btnAwardOffer')
 
     }
 
