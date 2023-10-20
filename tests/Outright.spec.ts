@@ -1,4 +1,4 @@
-import { test, expect, Page, BrowserContext } from "@playwright/test"
+import { test, expect } from "@playwright/test"
 import BuysideUser from "../Users/buysideUser"
 import SellsideUser from "../Users/sellsideUser"
 import auth from "../Data/frameworkData/signInDetails.json"
@@ -11,48 +11,38 @@ test.describe('Verify details for outright swaps', () => {
     // Use soft assertions.
     const Expect = expect.configure({ soft: true });
 
-    // bs and ss context and page and user.
-    let bsContext: BrowserContext
-    let ssContext: BrowserContext
-    let bsPage: Page
-    let ssPage: Page
     let bs: BuysideUser
     let ss: SellsideUser
 
     test.beforeAll(async ({ browser }) => {
 
-        // Instantiate bs and ss context, page and user.
-        bsContext = await browser.newContext()
-        ssContext = await browser.newContext()
-        bsPage = await bsContext.newPage()
-        ssPage = await ssContext.newPage()
-        bs = new BuysideUser(bsPage)
-        ss = new SellsideUser(ssPage)
+        // Create users
+        bs = new BuysideUser(await browser.newPage())
+        ss = new SellsideUser(await browser.newPage())
 
-        // Sign in to bid.
-        await bs.signIn(bsPage, auth.OUT.bs.username, auth.OUT.bs.password)
-        await ss.signIn(ssPage, auth.OUT.ss1.username, auth.OUT.ss1.password)
-        await bsPage.goto('/api/bid/archiveallthethingsquickly')
+        await bs.signIn(auth.OUT.bs.username, auth.OUT.bs.password)
+        await ss.signIn(auth.OUT.ss1.username, auth.OUT.ss1.password)
+        await bs.archiveAll()
 
     })
 
     test.beforeEach(async () => {
 
-        await ssPage.goto('/')
-        await bsPage.goto('/')
+        await ss.goHome()
+        await bs.goHome()
 
     })
 
     test.afterEach(async () => {
 
-        await bsPage.goto('/api/bid/archiveallthethingsquickly')
+        await bs.archiveAll()
 
     })
 
     test.afterAll(async () => {
-
-        await bsContext.close()
-        await ssContext.close()
+        // I think we don't need to close the browser because it's a fixture and playwright handles that?
+        await bs.page.close()
+        await ss.page.close()
 
     })
 
@@ -64,12 +54,12 @@ test.describe('Verify details for outright swaps', () => {
         await ss.quotes({ bid: '1.1', offer: '1.2' })
         await bs.awardsBest("offer")
         await ss.clicksDone()
-        bs.clicksSummaryTab()
+        await bs.clicksSummaryTab()
 
         // Check inspector values after Affirm.
-        await Expect(bs.blotterStatus).toHaveText('Affirmed')
-        await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
-        await Expect(bs.winningQuote).toHaveText('1.2%')
+        await Expect(bs.blotterStatus()).toHaveText('Affirmed')
+        await Expect(bs.mainEconBankSide()).toHaveText('Rec fixed')
+        await Expect(bs.winningQuote()).toHaveText('1.2%')
 
     })
 
@@ -82,12 +72,12 @@ test.describe('Verify details for outright swaps', () => {
         await ss.quotes({ bid: '1.1', offer: '1.2' })
         await bs.awardsBest("offer")
         await ss.clicksDone()
-        bs.clicksSummaryTab()
+        await bs.clicksSummaryTab()
 
         // Check inspector values after Affirm.
-        await Expect(bs.blotterStatus).toHaveText('Affirmed')
-        await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
-        await Expect(bs.winningQuote).toHaveText('1.2%')
+        await Expect(bs.blotterStatus()).toHaveText('Affirmed')
+        await Expect(bs.mainEconBankSide()).toHaveText('Rec fixed')
+        await Expect(bs.winningQuote()).toHaveText('1.2%')
 
     })
 
@@ -108,20 +98,20 @@ test.describe('Verify details for outright swaps', () => {
         await bs.clicksAcceptsDetails()
 
         // Check Accept details modal values.
-        await Expect(bs.dmPremiumDir).toHaveText('Receive')
-        await Expect(bs.dmPremiumCents).toHaveText('21 c')
-        await Expect(bs.dmPremiumCash).toHaveText('420,000 USD')
-        await Expect(bs.dmDxDir).toHaveText('Pay')
-        await Expect(bs.dmDxNot).toHaveText('1,000,000')
+        await Expect(bs.dmPremiumDir()).toHaveText('Receive')
+        await Expect(bs.dmPremiumCents()).toHaveText('21 c')
+        await Expect(bs.dmPremiumCash()).toHaveText('420,000 USD')
+        await Expect(bs.dmDxDir()).toHaveText('Pay')
+        await Expect(bs.dmDxNot()).toHaveText('1,000,000')
         
         await bs.clicksAccept()
         await bs.clicksSummaryTab()
 
         // Check inspector values after Affirm.
-        await Expect(bs.blotterStatus).toHaveText('Affirmed')
-        await Expect(bs.qPanelBestBid).toContainText('21 c  - MWMEGA420,000 USD')
-        await Expect(bs.winningQuote).toHaveText('21 c')
-        await Expect(bs.mainEconBankSide).toHaveText('Buy')
+        await Expect(bs.blotterStatus()).toHaveText('Affirmed')
+        await Expect(bs.qPanelBestBid()).toContainText('21 c  - MWMEGA420,000 USD')
+        await Expect(bs.winningQuote()).toHaveText('21 c')
+        await Expect(bs.mainEconBankSide()).toHaveText('Buy')
         
     })
 
@@ -140,12 +130,12 @@ test.describe('Verify details for outright swaps', () => {
         await ss.quotes({ bid: '1.1', offer: '1.2' })
         await bs.awardsBest("offer")
         await ss.clicksDone()
-        bs.clicksSummaryTab()
+        await bs.clicksSummaryTab()
 
         // Check inspector values after Affirm.
-        await Expect(bs.blotterStatus).toHaveText('Affirmed')
-        await Expect(bs.mainEconBankSide).toHaveText('Rec fixed')
-        await Expect(bs.winningQuote).toHaveText('1.2%')
+        await Expect(bs.blotterStatus()).toHaveText('Affirmed')
+        await Expect(bs.mainEconBankSide()).toHaveText('Rec fixed')
+        await Expect(bs.winningQuote()).toHaveText('1.2%')
 
         })
     }

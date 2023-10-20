@@ -1,108 +1,69 @@
-import { Page, Locator } from "@playwright/test";
+import { Page } from "@playwright/test";
 
 export default class BaseUser {
 
-    readonly page: Page
+    page: Page;
 
     // Sign-in.
-    private readonly signInPwd: Locator
-    private readonly signInEmail: Locator
-    private readonly logInBtn: Locator
-    private readonly enablePopUp: Locator
-    private readonly remindMePopUp: Locator
+    private readonly signInEmail = () => this.page.locator('#Email')
+    private readonly signInPwd = () => this.page.locator('#Password')
+    private readonly logInBtn = () => this.page.getByRole('button').filter({ hasText: 'Log In' })
+    private readonly enablePopUp = () => this.page.getByRole('button').filter({ hasText: 'Enable' })
+    private readonly remindMePopUp = () =>this.page.getByRole('button').filter({ hasText: 'Remind Me in 14 days.' })
 
     // Blotter row.
-    readonly blotterStatus: Locator
+    readonly blotterStatus = () => this.page.locator("//div[@id='statusIdCell']").first()
 
     // Blotter actions.
-    readonly acceptDetailsBtn: Locator
+    readonly acceptDetailsBtn = () => this.page.getByRole('button').filter({ hasText: 'Accept Details' }).first()
 
     // Inspector.
-    readonly summaryTab: Locator
-    readonly winningQuote: Locator
-    readonly mainEconNotional: Locator
-    readonly mainEconBankSide: Locator
+    readonly summaryTab = () => this.page.locator("#tabSummary")
+    readonly winningQuote = () => this.page.locator("#dealSummaryWinningQuote")
+    readonly mainEconNotional = () => this.page.locator("#notional0")
+    readonly mainEconBankSide = () => this.page.locator("#mainEconomicsBankSide0")
 
     // Enter/Accept details modal.
-    readonly dmPremiumDir: Locator
-    readonly dmPremiumCents: Locator
-    readonly dmDxDirDropDown: Locator
-    readonly dmPremiumCash: Locator
-    readonly dmDxDir: Locator
-    readonly dmDxNot: Locator
+    readonly dmPremiumDir = () => this.page.locator("#totalPremiumDirection")
+    readonly dmPremiumCents = () => this.page.locator("#totalPremiumRate")
+    readonly dmDxDirDropDown = () => this.page.locator('select[name="totalDirection"]')
+    readonly dmPremiumCash = () => this.page.locator("#totalPremiumCash")
+    readonly dmDxDir = () => this.page.locator("#totalDeltaExchangeDirection")
+    readonly dmDxNot = () => this.page.locator("#totaldeltaExchange")
 
     // General actions.
-    readonly AcceptBtn: Locator
+    readonly AcceptBtn = () => this.page.locator('#submitButton')
 
     // Inspector tabs.
-    readonly swnTab: Locator
+    readonly swnTab = () => this.page.locator('a').filter({ hasText: 'SWAPTION' })
 
-    
     constructor(page: Page) {
 
         this.page = page
 
-        // Sign-in.
-        this.signInEmail = page.locator('#Email')
-        this.signInPwd = page.locator('#Password')
-        this.logInBtn = page.getByRole('button').filter({ hasText: 'Log In' })
-        this.enablePopUp = page.getByRole('button').filter({ hasText: 'Enable' })
-        this.remindMePopUp = page.getByRole('button').filter({ hasText: 'Remind Me in 14 days.' })
-
-        // Blotter row.
-        this.blotterStatus = page.locator("//div[@id='statusIdCell']").first()
-
-        // Blotter actions.
-        this.acceptDetailsBtn = page.getByRole('button').filter({ hasText: 'Accept Details' }).first()
-
-        // Inspector.
-        this.summaryTab = page.locator("#tabSummary")
-        this.winningQuote = page.locator("#dealSummaryWinningQuote")
-        this.mainEconNotional = page.locator("#notional0")
-        this.mainEconBankSide = page.locator("#mainEconomicsBankSide0")
-
-        // Enter/Accept details.
-        this.dmPremiumDir = page.locator("#totalPremiumDirection")
-        this.dmPremiumCents = page.locator("#totalPremiumRate")
-        this.dmPremiumCash = page.locator("#totalPremiumCash")
-        this.dmDxDirDropDown = page.locator('select[name="totalDirection"]')
-        this.dmDxDir = page.locator("#totalDeltaExchangeDirection")
-        this.dmDxNot = page.locator("#totaldeltaExchange")
-
-        // General actions.
-        this.AcceptBtn = page.locator('#submitButton')
-
-        // Inpector tabs.
-        this.swnTab = page.locator('a').filter({ hasText: 'SWAPTION' })
-
     }
-    
 
-    async signIn(page: Page, username: string, password: string) {
+    async goHome() { await this.page.goto('/') }
+    
+    async signIn(username: string, password: string) {
 
         // Uses base URL in plawyright.config.
-        page.goto('/')
+        await this.page.goto('/')
 
         // Sign-in modal.
-        await this.signInEmail.fill(username)
-        await this.signInPwd.fill(password)
-        await this.logInBtn.click()
+        await this.signInEmail().fill(username)
+        await this.signInPwd().fill(password)
+        await this.logInBtn().click()
 
         // Get through first time sign in pop-ups.
-        await this.enablePopUp.click()
-        await this.remindMePopUp.click()
+        await this.enablePopUp().click()
+        await this.remindMePopUp().click()
 
     }
 
-    async clicksAccept() {
+    async clicksAccept() { await this.AcceptBtn().click() }
 
-        this.AcceptBtn.click()
-    
-    }
-
-    async clicksSwnTab() {
-        this.swnTab.click()
-    }
+    async clicksSwnTab() { await this.swnTab().click() }
 
     
 }
