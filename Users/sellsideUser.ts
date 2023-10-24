@@ -32,12 +32,12 @@ export default class SellsideUser extends BasePage {
 
     async clicksDone() { await this.qPanelDone().click() }
 
-    async quotes(options?: { bid?: string; offer?: string; allIn?: string; }) {
+    async quotes(options: { bid?: string, offer?: string, allIn?: string; }) {
 
         // Input quoting values.
-        if (options?.bid !== undefined) {await this.qPanelBid().fill(options.bid)}
-        if (options?.offer !== undefined) {await this.qPanelOffer().fill(options.offer)}
-        if (options?.allIn !== undefined) {await this.qPanelAllIn().fill(options.allIn)}
+        if (options.bid !== undefined) {await this.qPanelBid().fill(options.bid)}
+        if (options.offer !== undefined) {await this.qPanelOffer().fill(options.offer)}
+        if (options.allIn !== undefined) {await this.qPanelAllIn().fill(options.allIn)}
 
         // Select Trader Name from dropdown.
         const firstTraderName: string | null = await this.qPanelTraderOption1().getAttribute('value')

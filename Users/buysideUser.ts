@@ -58,11 +58,13 @@ export default class BuysideUser extends BasePage  {
 
     }
 
-    async loadsShortCode(shortcode: string) {
+    async loadsShortCode(shortcode: string | undefined) {
 
-        await this.shortCodeInput().fill(shortcode)
+        if (shortcode !== undefined) {
+            await this.shortCodeInput().fill(shortcode)
+        }
         await this.goBtn().click()
-
+        
     }
 
     async sendsRFQ(options?: { 

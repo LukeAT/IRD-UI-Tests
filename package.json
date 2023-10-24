@@ -15,6 +15,7 @@
     "eslint-plugin-playwright": "^0.16.0"
   },
   "dependencies": {
+    "csv-parse": "^5.5.2",
     "js-base64": "^3.7.5"
   }
 }

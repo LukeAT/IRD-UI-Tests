@@ -4,9 +4,10 @@ import SellsideUser from "../Users/sellsideUser"
 import auth from "../Data/frameworkData/signInDetails.json"
 import sc from "../Data/frameworkData/shortcodes.json"
 import i from "../Data/frameworkData/importTypes.json"
+import Utils from "../Helpers/Utils"
 
 
-test.describe('Verify details for outright swaps', () => {
+test.describe('Verify details for outright swaps', async () => {
 
     // Use soft assertions.
     const Expect = expect.configure({ soft: true });
@@ -85,13 +86,14 @@ test.describe('Verify details for outright swaps', () => {
 
         await bs.uploads('swnBuyReceiverSpreadWithDxNot.tsv')
         await bs.importsRfqAs(i.swaption)
-        await bs.sendsRFQ({ 
+        await bs.sendsRFQ({
             withDeltaX: true,
-            dxNot: '1,000,000', 
-            atmFr: '1.33', 
-            oneWay: true })
+            dxNot: '1,000,000',
+            atmFr: '1.33',
+            oneWay: true
+        })
         await ss.acknowledges()
-        await ss.quotes({ bid: '21'})
+        await ss.quotes({ bid: '21' })
         await bs.awardsBest('bid')
         await ss.clicksDone()
         await ss.entersDetails({ dxDir: 'Receive' })
@@ -103,7 +105,7 @@ test.describe('Verify details for outright swaps', () => {
         await Expect(bs.dmPremiumCash()).toHaveText('420,000 USD')
         await Expect(bs.dmDxDir()).toHaveText('Pay')
         await Expect(bs.dmDxNot()).toHaveText('1,000,000')
-        
+
         await bs.clicksAccept()
         await bs.clicksSummaryTab()
 
@@ -112,7 +114,7 @@ test.describe('Verify details for outright swaps', () => {
         await Expect(bs.qPanelBestBid()).toContainText('21 c  - MWMEGA420,000 USD')
         await Expect(bs.winningQuote()).toHaveText('21 c')
         await Expect(bs.mainEconBankSide()).toHaveText('Buy')
-        
+
     })
 
     const shortcodes = [
@@ -124,21 +126,123 @@ test.describe('Verify details for outright swaps', () => {
 
         test(`OUT Send shortcodes and verify details after affirm. ${i}`, async () => {
 
-        await bs.loadsShortCode(shortcodes[i])
-        await bs.sendsRFQ()
-        await ss.acknowledges()
-        await ss.quotes({ bid: '1.1', offer: '1.2' })
-        await bs.awardsBest("offer")
-        await ss.clicksDone()
-        await bs.clicksSummaryTab()
+            await bs.loadsShortCode(shortcodes[i])
+            await bs.sendsRFQ()
+            await ss.acknowledges()
+            await ss.quotes({ bid: '1.1', offer: '1.2' })
+            await bs.awardsBest("offer")
+            await ss.clicksDone()
+            await bs.clicksSummaryTab()
 
-        // Check inspector values after Affirm.
-        await Expect(bs.blotterStatus()).toHaveText('Affirmed')
-        await Expect(bs.mainEconBankSide()).toHaveText('Rec fixed')
-        await Expect(bs.winningQuote()).toHaveText('1.2%')
+            // Check inspector values after Affirm.
+            await Expect(bs.blotterStatus()).toHaveText('Affirmed')
+            await Expect(bs.mainEconBankSide()).toHaveText('Rec fixed')
+            await Expect(bs.winningQuote()).toHaveText('1.2%')
 
         })
     }
+
+
+    const params = Utils.csvParameters('outrightScRfqs.csv')
+
+    for (const p of params) {
+
+        test(`OUT Send CSV params and verify details after affirm. ${p.key}`, async () => {
+
+            await bs.loadsShortCode(p.shortcodes)
+            await bs.sendsRFQ()
+            await ss.acknowledges()
+            await ss.quotes({ bid: p.bid, offer: p.offer })
+            await bs.awardsBest("offer")
+            await ss.clicksDone()
+            await bs.clicksSummaryTab()
+
+            // Check inspector values after Affirm.
+            await Expect(bs.blotterStatus()).toHaveText('Affirmed')
+            await Expect(bs.mainEconBankSide()).toHaveText('Rec fixed')
+            await Expect(bs.winningQuote()).toHaveText(p.winningQuote)
+
+        })
+
+    }
+
+    const params1 = Utils.csvParameters('outrightTsvRfqs.csv')
+
+    for (const p of params1) {
+
+        test(`XYZ Send CSV params and verify details after affirm. ${p.key}`, async () => {
+
+            await bs.uploads(p.rfqFile)
+            await bs.importsRfqAs(i.rfqOnRate)
+            await bs.sendsRFQ()
+            await ss.acknowledges()
+            await ss.quotes({ bid: p.bid, offer: p.offer })
+            await bs.awardsBest("offer")
+            await ss.clicksDone()
+            await bs.clicksSummaryTab()
+
+            // Check inspector values after Affirm.
+            await Expect(bs.blotterStatus()).toHaveText('Affirmed')
+            await Expect(bs.mainEconBankSide()).toHaveText('Rec fixed')
+            await Expect(bs.winningQuote()).toHaveText(p.winningQuote)
+
+        })
+
+    }
+
+    const params2 = [
+        ['p eur 5y not 100mm', '1.1', '1.2', '1.2%'],
+        ['p gbp 5y not 50mm inf', '1.3', '1.4', '1.4%'],
+        ['p huf 2y not 1b ois', '1.4', '1.5, 1.5%']
+    ]
+
+    for (let i = 0; i < params2.length; i++) {
+
+        test(`WXYZ Send CSV params and verify details after affirm. ${i}`, async () => {
+
+            await bs.loadsShortCode(params2[i][0])
+            await bs.sendsRFQ()
+            await ss.acknowledges()
+            await ss.quotes({ bid:params2[i][1], offer: params2[i][2] })
+            await bs.awardsBest("offer")
+            await ss.clicksDone()
+            await bs.clicksSummaryTab()
+
+            // Check inspector values after Affirm.
+            await Expect(bs.blotterStatus()).toHaveText('Affirmed')
+            await Expect(bs.mainEconBankSide()).toHaveText('Rec fixed')
+            await Expect(bs.winningQuote()).toHaveText(params2[i][3])
+
+        })
+
+    }
+
+    const a = [
+        {shortCode: 'p eur 5y not 100mm', bid: '1.1', offer: '1.2', winningQuote: '1.2%'},
+        {shortCode: 'p gbp 5y not 50mm inf', bid: '1.3', offer: '1.4', winningQuote: '1.4%'},
+        {shortCode: 'p huf 2y not 1b ois', bid: '1.4', offer: '1.5', winningQuote: '1.5%'},
+    ]
+
+    for (let i = 0; i < params2.length; i++) {
+
+        test(`WXYZQ Send CSV params and verify details after affirm. ${i}`, async () => {
+
+            await bs.loadsShortCode(a[i].shortCode)
+            await bs.sendsRFQ()
+            await ss.acknowledges()
+            await ss.quotes({ bid:a[i].bid, offer: a[i].offer })
+            await bs.awardsBest("offer")
+            await ss.clicksDone()
+            await bs.clicksSummaryTab()
+
+            // Check inspector values after Affirm.
+            await Expect(bs.blotterStatus()).toHaveText('Affirmed')
+            await Expect(bs.mainEconBankSide()).toHaveText('Rec fixed')
+            await Expect(bs.winningQuote()).toHaveText(a[i].winningQuote)
+
+        })
+
+    }
+
+
 })
-
-
