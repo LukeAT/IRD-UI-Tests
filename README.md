@@ -50,7 +50,7 @@ and allows the tests to be written from the users' perspective.
     - If you can add the needed assertion(s) to an existing test, without modifying the workflow, do that.
     - If the new assertions can only be made with a new workflow, write a new test.
     - We want to be able to run all tests multiple times a day so new tests should only be created when it's the only option.
-- Only use playwrights auto-retrying assertions.
+- **Only use playwrights** [auto-retrying assertions.](https://playwright.dev/docs/test-assertions#auto-retrying-assertions)
 - Use playwrights recommended locators whenever possible.
 - Use TODO's and the 'Todo Tree' recommended extension to keep this project organised.
 - Use CSS locators over Xpath.

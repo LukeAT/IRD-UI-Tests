@@ -6,7 +6,7 @@ import auth from '../Data/frameworkData/signInDetails.json';
 import i from '../Data/frameworkData/importTypes.json';
 import sc from '../Data/frameworkData/shortcodes.json';
 
-test.describe('Verify details for inflation swaps.', () => {
+test.describe('Verify details for overnight-index swaps.', () => {
   // Use soft assertions.
   const Expect = expect.configure({ soft: true });
 
@@ -18,8 +18,6 @@ test.describe('Verify details for inflation swaps.', () => {
   let bs: BuysideUser;
   let ss: SellsideUser;
 
-  // Pass in browser to bs ss user class, instantiate in the class. Pass in credentials here too.
-
   test.beforeAll(async ({ browser }) => {
     // Instantiate bs and ss context, page and user.
     bsContext = await browser.newContext();
@@ -30,8 +28,8 @@ test.describe('Verify details for inflation swaps.', () => {
     ss = new SellsideUser(ssPage);
 
     // Sign in to bid.
-    await bs.signIn(bsPage, auth.INF.bs.username, auth.INF.bs.password);
-    await ss.signIn(ssPage, auth.INF.ss1.username, auth.INF.ss1.password);
+    await bs.signIn(bsPage, auth.OIS.bs.username, auth.OIS.bs.password);
+    await ss.signIn(ssPage, auth.OIS.ss1.username, auth.OIS.ss1.password);
     await bsPage.goto('/api/bid/archiveallthethingsquickly');
   });
 
@@ -49,7 +47,7 @@ test.describe('Verify details for inflation swaps.', () => {
     await ssContext.close();
   });
 
-  test('INF Send INF shortcode and verify details after affirm.', async () => {
+  test('OIS Send INF shortcode and verify details after affirm.', async () => {
     await bs.loadsShortCode(sc.INF.EUR);
     await bs.sendsRFQ();
     await ss.acknowledges();
@@ -64,7 +62,7 @@ test.describe('Verify details for inflation swaps.', () => {
     await Expect(bs.winningQuote).toHaveText('1.2%');
   });
 
-  test('INF upload outright TSV and verify details after affirm.', async () => {
+  test('OIS upload outright TSV and verify details after affirm.', async () => {
     await bs.uploads('outright.tsv');
     await bs.importsRfqAs(i.rfqOnRate);
     await bs.sendsRFQ();
@@ -80,7 +78,7 @@ test.describe('Verify details for inflation swaps.', () => {
     await Expect(bs.winningQuote).toHaveText('1.2%');
   });
 
-  test(`INF upload swaption and verify enter details, then summary tab after affirm.`, async () => {
+  test(`OIS upload swaption and verify enter details and summary tab after affirm.`, async () => {
     await bs.uploads('swnBuyReceiverSpreadWithDxNot.tsv');
     await bs.importsRfqAs(i.swaption);
     await bs.sendsRFQ({
@@ -115,10 +113,8 @@ test.describe('Verify details for inflation swaps.', () => {
 
   const shortcodes = [sc.INF.EUR, sc.OUT.EUR];
 
-  // use config more. credentials in config. Configs can inherit from another.
-
   for (let i = 0; i < shortcodes.length; i++) {
-    test(`INF Send shortcodes and verify details after affirm. ${i}`, async () => {
+    test(`OIS Send shortcodes and verify after affirm. ${i}`, async () => {
       await bs.loadsShortCode(shortcodes[i]);
       await bs.sendsRFQ();
       await ss.acknowledges();
