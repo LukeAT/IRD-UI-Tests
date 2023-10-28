@@ -1,6 +1,5 @@
 import { DataScRFQFields, DataTsvRFQFields } from '../types/data';
 import { expect, test } from '@playwright/test';
-
 import BuysideUser from '../users/buysideUser';
 import SellsideUser from '../users/sellsideUser';
 import auth from '../Data/frameworkData/signInDetails.json';
@@ -121,7 +120,7 @@ test.describe('Verify details for outright swaps', async () => {
   const params = csvParameters<DataScRFQFields>('outrightScRfqs.csv');
 
   for (const p of params) {
-    test(`OUT Send CSV params and verify details after affirm. ${p.key}`, async () => {
+    test(`OUT Send csv param shortcodes and verify details after affirm. ${p.key}`, async () => {
       await bs.loadsShortCode(p.shortcodes);
       await bs.sendsRFQ();
       await ss.acknowledges();
@@ -140,7 +139,7 @@ test.describe('Verify details for outright swaps', async () => {
   const params1 = csvParameters<DataTsvRFQFields>('outrightTsvRfqs.csv');
 
   for (const p of params1) {
-    test(`XYZ Send CSV params and verify details after affirm. ${p.key}`, async () => {
+    test(`OUT Send csv params csv RFQ's and verify details after affirm. ${p.key}`, async () => {
       await bs.uploads(p.rfqFile);
       await bs.importsRfqAs(i.rfqOnRate);
       await bs.sendsRFQ();

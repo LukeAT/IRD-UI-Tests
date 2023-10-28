@@ -13,4 +13,3 @@ export interface DataTsvRFQFields {
   offer: string;
   winningQuote: string;
 }
-
