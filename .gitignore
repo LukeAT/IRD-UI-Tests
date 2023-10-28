@@ -1,4 +1,4 @@
 node_modules/
-.results/
-.reports/
+.test-results/
+.report/
 playwright/.cache/
